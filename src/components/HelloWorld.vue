@@ -91,15 +91,15 @@
 
 <script>
 import httpRequest from './httpRequest'
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
-  }
-},
-methods: {
+  },
+  methods: {
     async onClickSendData () {
       const data = {
         email: 'test@test.test',
@@ -109,11 +109,13 @@ methods: {
       console.log(res.data['email'])
       console.log(res.data['gender'])
     }
-},
-computed: {
-  routerTestURL () {
-    return '/routertest'
+  },
+  computed: {
+    routerTestURL () {
+      return '/routertest'
+    }
   }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

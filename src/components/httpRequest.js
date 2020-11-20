@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 function httpTest ($http, host, data) {
     return $http({
       method: 'post',
