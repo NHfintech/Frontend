@@ -1,0 +1,4 @@
+node_modules
+/static/settings-local.js
+.idea
+package-lock.json
