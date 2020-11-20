@@ -3,8 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+import env from '../static/settings-local'
 
 Vue.config.productionTip = false
+
+Vue.prototype.$http = axios
+Vue.prototype.$env = env
 
 /* eslint-disable no-new */
 new Vue({
