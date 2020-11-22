@@ -1,18 +1,22 @@
 <template>
-  <div class="hello">
-    <h1>LOGIN PAGE</h1>
-    <div class="col-12 justify-content-center">
-      <div class="col-12 mt-3">
+  <div class="signup">
+    <h1>Signup PAGE</h1>
+    <div class="col-12 ">
+      <div class="col-12 my-4">
         <input placeholder="ID" class="col-9" type="text" name="id" v-model="id" />
       </div>
-      <div class="col-12 mt-3 ">
+      <div class="col-12 my-4 ">
         <input placeholder="Password" class="col-9" type="password" name="password" v-model="password" />
       </div>
+      <div class="col-12 my-4 ">
+        <input placeholder="name" class="col-9" type="text" name="name" v-model="name" />
+      </div>
+      <div class="col-12 my-4 ">
+        <input placeholder="phone" class="col-9" type="text" name="phone" v-model="phone" />
+      </div>
     </div>
-    <div class="mt-4">
-      <button class="btn btn-success" :disabled="!id&&!password" @click="onClickSendData">로그인</button>
-      <router-link class="btn border-success" :to="{ path: SignupURL }">회원가입</router-link>
-    </div>
+    <button class="btn btn-success" :disabled="!id&&!password" @click="onClickSendData">로그인</button>
+    <router-link class="btn border-success" :to="{ path: routerTestURL }">회원가입</router-link>
   </div>
 </template>
 
@@ -20,11 +24,13 @@
 import httpRequest from './httpRequest'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Signup',
   data () {
     return {
       id: 'hi',
-      password: 'pw'
+      password: 'pw',
+      name: 'name',
+      phone: '010-1234-5678'
     }
   },
   methods: {
@@ -43,8 +49,8 @@ export default {
     }
   },
   computed: {
-    SignupURL () {
-      return '/Signup'
+    routerTestURL () {
+      return '/routertest'
     }
   }
 }
