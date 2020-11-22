@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import httpRequest from './httpRequest'
+import API from './API'
 
 export default {
   name: 'HelloWorld',
@@ -105,7 +105,7 @@ export default {
         email: 'test@test.test',
         gender: 'male'
       }
-      let res = await httpRequest.httpTest(this.$http, this.$env.apiUrl, data).catch((e) => { console.log(e) })
+      let res = await API.httpTest(this.$http, this.$env.apiUrl, data).catch((e) => { console.log(e) })
       console.log(res.data['email'])
       console.log(res.data['gender'])
     }
