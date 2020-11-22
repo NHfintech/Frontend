@@ -26,7 +26,7 @@ export default {
     login: function () {
       const data = {
         username: this.username,
-        userPassword: this.userPassword
+        password: this.userPassword
       }
       API.signInAPI(this.$http, this.$env.apiUrl, data)
         .then(res => {

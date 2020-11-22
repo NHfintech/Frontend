@@ -86,11 +86,20 @@
       <router-link :to="{ path: routerTestURL }">
         이동
       </router-link>
+      <br><br><br>
+      <div v-if="isLoggedIn">
+        <a @click="logout" href="/">SIGN OUT</a>
+      </div>
+      <div v-else>
+        <router-link :to="{ path: loginURL }">
+          SIGN IN
+        </router-link>
+      </div>
   </div>
 </template>
 
 <script>
-import API from './API'
+import API from '../components/API'
 
 export default {
   name: 'HelloWorld',
@@ -108,11 +117,24 @@ export default {
       let res = await API.httpTest(this.$http, this.$env.apiUrl, data).catch((e) => { console.log(e) })
       console.log(res.data['email'])
       console.log(res.data['gender'])
+    },
+    logout: function () {
+      this.$store.commit('removeUser')
     }
   },
   computed: {
     routerTestURL () {
       return '/routertest'
+    },
+    loginURL () {
+      return '/login'
+    },
+    isLoggedIn: function () {
+      if (this.$store.state.user === undefined) {
+        return false
+      } else {
+        return true
+      }
     }
   }
 }

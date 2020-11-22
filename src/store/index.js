@@ -7,19 +7,19 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token: undefined,
-    user: undefined,
+    user: undefined
   },
   mutations: {
     saveUser (state, user) {
-        state.user = user
+      state.user = user
     },
     saveToken (state, token) {
-        state.token = token
+      state.token = token
     },
     removeUser (state) {
-        state.user = undefined
-        state.token = undefined
-    },
+      state.user = undefined
+      state.token = undefined
+    }
   },
   plugins: [createPersist({
     namespace: 'nh',

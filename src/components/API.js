@@ -10,7 +10,7 @@ function httpTest ($http, host, data) {
 
 function signInAPI ($http, host, data) {
   return $http({
-    method: 'get',
+    method: 'post',
     url: host + '/auth/login',
     data
   })
