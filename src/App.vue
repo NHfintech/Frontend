@@ -15,6 +15,7 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
 #app {
   /* min-height: 100%; */
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -25,5 +26,8 @@ export default {
 }
 .font-13{
   font-size:13px
+}
+.font-do{
+  font-family: 'Do Hyeon', sans-serif;
 }
 </style>

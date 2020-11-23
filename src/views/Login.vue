@@ -1,24 +1,26 @@
 <template>
   <div id="LogIn" class="height-max">
-    <div class="col-12 justify-content-start">
-      <router-link class="col-3" to='/'>
-    홈으로
-    </router-link>
+    <div class="col-12 bg-image">
     </div>
-    <h5>Welcome to</h5>
+    <div class="col-12 justify-content-start z-index-100 font-do">
+      <router-link class="col-3" to='/'>
+      홈으로
+      </router-link>
+    <h5 class="mt-5">Welcome to</h5>
     <h5>C&J</h5>
-    <div v-if="isActive" class="col-12 justify-content-center">
-      <div class="col-12 mt-3">
-        <input placeholder="ID" class="col-9" type="text" v-model="username" />
+    <div v-if="isActive" class="col-12 mt-5 ">
+      <div class="col-12">
+        <input placeholder="ID" class="form-control" type="text" v-model="username" />
       </div>
-      <div class="col-12 mt-3 ">
-        <input placeholder="PASSWORD" class="col-9" type="password" v-model="userPassword" />
+      <div class="col-12 mt-3  font-do">
+        <input placeholder="PASSWORD" class="form-control" type="password" v-model="userPassword" />
       </div>
     </div>
     <footer class="mt-4 col-12 footer text-center">
-      <button class="col-10 mx-auto mb-3 py-2 font-13 btn btn-block rounded-pill border-secondary" :class="{'btn-success':username&&userPassword}" v-on:click="isActive?login():isActive=!isActive ">로그인</button>
-      <router-link class="col-10 mx-auto mt-3 py-2 font-13 btn btn-block rounded-pill border-success" to='Signup'>회원가입</router-link>
+      <button class="col-10 mx-auto mb-3 py-2 font-13 btn btn-block btn-light rounded-pill border-secondary" :class="{'btn-success':username&&userPassword}" v-on:click="isActive?login():isActive=!isActive ">로그인</button>
+      <router-link class="col-10 mx-auto mt-3 py-2 font-13 btn btn-block btn-light rounded-pill border-success" to='Signup'>회원가입</router-link>
     </footer>
+    </div>
   </div>
 </template>
 <script>
@@ -59,14 +61,18 @@ export default {
   position: fixed;
   bottom: 10%;
 }
-
+.z-index-100{
+  z-index: 100;
+}
 .bg-image {
+  position: fixed;;
   /* The image used */
-  /* background-image: url("photographer.jpg"); */
+  background-image: url("~@/assets/bg-login.jpg");
 
   /* Add the blur effect */
-  filter: blur(8px);
-  -webkit-filter: blur(8px);
+  /* filter: blur(10px); */
+  /* -webkit-filter: blur(10px); */
+  opacity: 0.4;
 
   /* Full height */
   height: 100%;
@@ -76,5 +82,16 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
 }
+.bg-main{
+  /* position: absolute; */
+  /* top: 50%; */
+  /* left: 50%; */
+  height: 100vh;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+}
 
+.btn-light{
+  opacity: 0.8;
+}
 </style>
