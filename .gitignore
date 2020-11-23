@@ -12,6 +12,7 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+.yarn.lock
 node_modules
 /static/settings-local.js
 package-lock.json

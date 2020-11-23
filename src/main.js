@@ -5,7 +5,12 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import env from '../static/settings-local'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 import store from './store'
+
+Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
 
