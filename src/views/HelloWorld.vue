@@ -13,11 +13,27 @@
       <button class="btn btn-success" :disabled="!id&&!password" @click="onClickSendData">로그인</button>
       <router-link class="btn border-success" :to="{ path: SignupURL }">회원가입</router-link>
     </div>
+
+     <button @click="onClickSendData">
+      Send Data
+    </button>
+      <router-link :to="{ path: routerTestURL }">
+        이동
+      </router-link>
+      <br><br><br>
+      <div v-if="isLoggedIn">
+        <a @click="logout" href="/">SIGN OUT</a>
+      </div>
+      <div v-else>
+        <router-link :to="{ path: loginURL }">
+          SIGN IN
+        </router-link>
+      </div>
   </div>
 </template>
 
 <script>
-import httpRequest from './httpRequest'
+import API from '../components/API'
 
 export default {
   name: 'HelloWorld',
@@ -33,18 +49,30 @@ export default {
         email: 'test@test.test',
         gender: 'male'
       }
-      let res = await httpRequest
-        .httpTest(this.$http, this.$env.apiUrl, data)
-        .catch(e => {
-          console.log(e)
-        })
+      let res = await API.httpTest(this.$http, this.$env.apiUrl, data).catch((e) => { console.log(e) })
       console.log(res.data['email'])
       console.log(res.data['gender'])
+    },
+    logout: function () {
+      this.$store.commit('removeUser')
     }
   },
   computed: {
     SignupURL () {
       return '/Signup'
+    },
+    routerTestURL () {
+      return '/routertest'
+    },
+    loginURL () {
+      return '/login'
+    },
+    isLoggedIn: function () {
+      if (this.$store.state.user === undefined) {
+        return false
+      } else {
+        return true
+      }
     }
   }
 }

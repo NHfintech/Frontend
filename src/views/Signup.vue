@@ -15,13 +15,13 @@
         <input placeholder="phone" class="col-9" type="text" name="phone" v-model="phone" />
       </div>
     </div>
-    <button class="btn btn-success" :disabled="!id&&!password" @click="onClickSendData">로그인</button>
+    <button class="btn btn-success" :disabled="!id&&!password" >로그인</button>
     <router-link class="btn border-success" :to="{ path: routerTestURL }">회원가입</router-link>
   </div>
 </template>
 
 <script>
-import httpRequest from './httpRequest'
+// import httpRequest from './httpRequest'
 
 export default {
   name: 'Signup',
@@ -33,27 +33,28 @@ export default {
       phone: '010-1234-5678'
     }
   },
-  methods: {
-    async onClickSendData () {
-      const data = {
-        email: 'test@test.test',
-        gender: 'male'
-      }
-      let res = await httpRequest
-        .httpTest(this.$http, this.$env.apiUrl, data)
-        .catch(e => {
-          console.log(e)
-        })
-      console.log(res.data['email'])
-      console.log(res.data['gender'])
-    }
-  },
+  // methods: {
+  //   async onClickSendData () {
+  //     const data = {
+  //       email: 'test@test.test',
+  //       gender: 'male'
+  //     }
+  //     let res = await httpRequest
+  //       .httpTest(this.$http, this.$env.apiUrl, data)
+  //       .catch(e => {
+  //         console.log(e)
+  //       })
+  //     console.log(res.data['email'])
+  //     console.log(res.data['gender'])
+  //   }
+  // },
   computed: {
     routerTestURL () {
       return '/routertest'
     }
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
