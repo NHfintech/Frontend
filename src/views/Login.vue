@@ -1,6 +1,6 @@
 <template>
   <div id="LogIn" class="height-max">
-    <div class="col-12 bg-image">
+    <div class="col-12 bg-image" :class="{'bg-blur':isActive}">
     </div>
     <div class="col-12 justify-content-start z-index-100 font-do">
       <router-link class="col-3" to='/'>
@@ -65,7 +65,8 @@ export default {
   z-index: 100;
 }
 .bg-image {
-  position: fixed;;
+  transition-duration: 0.3s;
+  position: fixed;
   /* The image used */
   background-image: url("~@/assets/bg-login.jpg");
 
@@ -81,6 +82,13 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+.bg-blur{
+  /* Add the blur effect */
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+  opacity: 0.7;
+
 }
 .bg-main{
   /* position: absolute; */
