@@ -23,6 +23,11 @@ export default new Router({
       path: '/login',
       component: Login,
       props: true
+    },
+    {
+      path: '/login',
+      component: Login,
+      props: true
     }
   ]
 })
