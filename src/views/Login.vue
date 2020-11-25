@@ -13,10 +13,10 @@
       <h5>C&J</h5>
     </div>
     <div v-if="isActiveSignup">
-      <h3 class="mt-5">회원가입</h3>
+      <h3 class="mt-2">회원가입</h3>
     </div>
     <div v-if="isActiveLogin">
-      <h3 class="mt-5">로그인</h3>
+      <h3 class="mt-2">로그인</h3>
     </div>
 
     <div v-if="isActiveLogin||isActiveSignup" class="col-12 mt-5 ">
@@ -36,17 +36,31 @@
           <b-input-group-prepend is-text>
             <b-icon icon="lock-fill"></b-icon>
           </b-input-group-prepend>
-          <b-form-input v-model="userPassword" type="password" placeholder="PASSWORD"></b-form-input>
+          <b-form-input aria-describedby="invalid-password" v-model="userPassword" :state="valiPassword" type="password" placeholder="비밀번호" valid-feedback="사용 가능합니다!" invalid-feedback="비밀번호는 6~12자로 설정해주세요" required></b-form-input>
+          <b-form-invalid-feedback id="invalid-password" >
+            비밀번호는 5~12자 입니다
+          </b-form-invalid-feedback>
         </b-input-group>
       </div>
     </div>
     <div v-if="isActiveSignup" class="col-12">
+      <div class="col-12">
+        <b-input-group class="mb-2">
+          <b-input-group-prepend is-text>
+            <b-icon icon="shield-fill-check"></b-icon>
+          </b-input-group-prepend>
+          <b-form-input v-model="confirmUserPassword" aria-describedby="invalid-confirm-password" :state="valiConfirmPassword" type="password" placeholder="비밀번호 확인"></b-form-input>
+          <b-form-invalid-feedback id="invalid-confirm-password" >
+              비밀번호가 일치하지 않습니다.
+          </b-form-invalid-feedback>
+        </b-input-group>
+      </div>
        <div class="col-12">
         <b-input-group class="mb-2">
           <b-input-group-prepend is-text>
             <b-icon icon="person-badge-fill"></b-icon>
           </b-input-group-prepend>
-          <b-form-input v-model="name" type="text" placeholder="name"></b-form-input>
+          <b-form-input v-model="name" type="text" placeholder="이름"></b-form-input>
         </b-input-group>
       </div>
       <div class="col-12">
@@ -54,11 +68,14 @@
           <b-input-group-prepend is-text>
             <b-icon icon="telephone-fill"></b-icon>
           </b-input-group-prepend>
-          <b-form-input v-model="phoneNumber" type="text" placeholder="phone number"></b-form-input>
+          <b-form-input v-model="phoneNumber" aria-describedby="invalid-phone-number" :state="valiPhoneNumber" type="text" placeholder="핸드폰 번호"></b-form-input>
+            <b-form-invalid-feedback id="invalid-phone-number" >
+              잘못된 전화번호 입니다.
+            </b-form-invalid-feedback>
         </b-input-group>
       </div>
     </div>
-    <footer class="mt-4 col-12 footer text-center">
+    <footer class="mt-5 col-12 footer text-center">
       <button class="col-10 mx-auto mb-3 py-2 font-13 btn btn-block btn-light rounded-pill border-secondary" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveLogin?login():isActiveLogin=!isActiveLogin ">로그인</button>
       <button class="col-10 mx-auto mt-3 py-2 font-13 btn btn-block btn-light rounded-pill border-success" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveSignup?signup():isActiveSignup=!isActiveSignup ">회원가입</button>
     </footer>
@@ -74,6 +91,7 @@ export default {
       userPassword: '',
       name: '',
       phoneNumber: '',
+      confirmUserPassword: '',
       isActiveLogin: false,
       isActiveSignup: false
     }
@@ -85,6 +103,22 @@ export default {
     isActiveSignup: function () {
       if (this.isActiveSignup) this.isActiveLogin = false
     }
+  },
+  computed: {
+    valiPassword () {
+      if (this.userPassword.length === 0) return null
+      return this.userPassword.length > 4 && this.userPassword.length < 13
+    },
+    valiConfirmPassword () {
+      if (this.confirmUserPassword.length === 0) return null
+      return this.confirmUserPassword === this.userPassword
+    },
+    valiPhoneNumber () {
+      if (this.phoneNumber.length === 0) return null
+      var temp = this.phoneNumber.replaceAll('-', '')
+      return temp.length === 11 && temp.substr(0, 3) === '010'
+    }
+
   },
   methods: {
     login: function () {
