@@ -5,7 +5,7 @@ import Signup from '@/views/Signup'
 import Login from '@/views/Login'
 import Home from '@/views/Home'
 import Event from '@/views/Event'
-import CreateEvent from '@/views/CreateEvent'
+import EventCreate from '@/views/EventCreate'
 
 Vue.use(Router)
 
@@ -29,7 +29,7 @@ let router = new Router({
     },
     {
       path: '/event/create',
-      component: CreateEvent,
+      component: EventCreate,
       meta: {
         requiresAuth: true
       }

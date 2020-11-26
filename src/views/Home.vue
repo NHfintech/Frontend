@@ -1,5 +1,8 @@
 <template>
   <div>
+      <button v-on:click="logout">
+        sign out
+      </button>
       <tbody>
         <tr v-for="(dd) in eventList" :key = dd.id v-on:click="onClickEvent(dd.id)">
           <td>
@@ -24,7 +27,7 @@
 </template>
 
 <script>
-import API from '../components/API'
+// import API from '../components/API'
 
 export default {
   name: 'HelloWorld',
@@ -36,7 +39,7 @@ export default {
   },
   methods: {
     async fetchEventList () {
-      const data = {'host': true}
+      // const data = {'host': true}
       // const res = await API.getEventListAPI(this.$http, this.$env.apiUrl, data)
       // this.eventList = res.data.data
       // test eventList
@@ -44,8 +47,9 @@ export default {
         {'id': 10, 'category': 'marriage', 'title': 'hyunjoon <3 huiseung', 'isActive': false},
         {'id': 25, 'category': 'funeral', 'title': 'gildong father', 'isActive': true}]
     },
-    logout: function () {
+    logout () {
       this.$store.commit('removeUser')
+      this.$router.replace({ path: '/login' }).catch(() => {})
     },
     onClickEvent (index) {
       this.$router.replace({ path: '/event/' + index }).catch(() => {})
