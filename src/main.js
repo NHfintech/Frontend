@@ -18,7 +18,9 @@ Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.prototype.$env = env
 
-const token = localStorage.getItem('token')
+const token = store.state.token
+console.log(token)
+console.log()
 if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = token
 }
