@@ -19,8 +19,6 @@ Vue.prototype.$http = axios
 Vue.prototype.$env = env
 
 const token = store.state.token
-console.log(token)
-console.log()
 if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = token
 }
