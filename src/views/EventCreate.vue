@@ -47,7 +47,7 @@
             <button class="col-6" v-on:click="addEventAdmin">Add Event Admin</button>
           </div>
         </div>
-        <button v-on:click="onclickCreateEvent">
+        <button v-on:click="onClickCreateEvent">
           Create Event
         </button>
     </div>
@@ -74,7 +74,7 @@ export default {
     }
   },
   methods: {
-    async onclickCreateEvent () {
+    async onClickCreateEvent () {
       const data = {
         'category': this.category,
         'title': this.title,

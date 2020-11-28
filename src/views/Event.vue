@@ -15,8 +15,8 @@
             {{endDatetime}}
           </div>
           <div>
-            <button v-on:click="onClickEditEvent()">edit</button>
-            <button v-on:click="onClickDestroyeEvent()">delete</button>
+            <button v-on:click="onClickEditEvent">edit</button>
+            <button v-on:click="onClickDestroyeEvent">delete</button>
           </div>
         </div>
     </div>

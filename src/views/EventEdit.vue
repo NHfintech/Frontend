@@ -47,7 +47,7 @@
             <button class="col-6" v-on:click="addEventAdmin">Add Event Admin</button>
           </div>
         </div>
-        <button v-on:click="onclickEditEvent">
+        <button v-on:click="onClickEditEvent">
           Edit Event
         </button>
     </div>
@@ -74,7 +74,7 @@ export default {
     }
   },
   methods: {
-    async onclickEditEvent () {
+    async onClickEditEvent () {
       const data = {
         'category': this.category,
         'title': this.title,
@@ -84,7 +84,7 @@ export default {
         'startDatetime': moment().format('YYYY-MM-DD HH:mm:ss'),
         'endDatetime': moment(this.endDatetime).format('YYYY-MM-DD HH:mm:ss')
       }
-      const res = await API.editEventAPI(this.$http, this.$env.apiUrl, data)
+      const res = await API.updateEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id, data)
       this.$router.replace({ path: '/event/' + res.data.id }).catch(() => {})
     },
     addEventAdmin () {
