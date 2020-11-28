@@ -27,7 +27,13 @@ export default {
 .font-13{
   font-size:13px
 }
+.font-10{
+  font-size:10px
+}
 .font-do{
   font-family: 'Do Hyeon', sans-serif;
+}
+.bg-custom-light{
+  background:rgb(234, 234, 234);
 }
 </style>
