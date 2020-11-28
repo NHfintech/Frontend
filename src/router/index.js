@@ -6,6 +6,7 @@ import Login from '@/views/Login'
 import Home from '@/views/Home'
 import Event from '@/views/Event'
 import EventCreate from '@/views/EventCreate'
+import EventEdit from '@/views/EventEdit'
 
 Vue.use(Router)
 
@@ -30,6 +31,13 @@ let router = new Router({
     {
       path: '/event/create',
       component: EventCreate,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/event/edit/:id',
+      component: EventEdit,
       meta: {
         requiresAuth: true
       }

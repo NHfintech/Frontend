@@ -55,10 +55,10 @@ function createEventAPI ($http, host, data) {
   })
 }
 
-function updateEventAPI ($http, host, data) {
+function updateEventAPI ($http, host, id, data) {
   return $http({
     method: 'put',
-    url: `${host}/event`,
+    url: `${host}/event/${id}`,
     data
   })
 }
