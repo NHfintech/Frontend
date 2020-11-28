@@ -85,7 +85,7 @@ export default {
         'endDatetime': moment(this.endDatetime).format('YYYY-MM-DD HH:mm:ss')
       }
       const res = await API.createEventAPI(this.$http, this.$env.apiUrl, data)
-      console.log(res)
+      this.$router.replace({ path: '/event/' + res.data.id }).catch(() => {})
     },
     addEventAdmin () {
       this.eventAdminCount += 1

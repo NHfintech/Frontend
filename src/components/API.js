@@ -36,7 +36,7 @@ function getEventListAPI ($http, host, data) {
   return $http({
     method: 'get',
     url: `${host}/event`,
-    data
+    params: data
   })
 }
 
