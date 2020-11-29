@@ -149,7 +149,7 @@ export default {
       }
       API.signUpAPI(this.$http, this.$env.apiUrl, data).then(res => {
         console.log(res.data)
-        alert(res.data.message)
+        alert(res.data.detail)
       })
     }
   }
