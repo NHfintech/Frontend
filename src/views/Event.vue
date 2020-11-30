@@ -12,11 +12,13 @@
             {{location}}
           </div>
           <div>
-            {{endDatetime}}
+            {{eventDatetime}}
           </div>
           <div>
             <button v-on:click="onClickEditEvent">edit</button>
             <button v-on:click="onClickDestroyeEvent">delete</button>
+            <button v-if="isActivated" v-on:click="onClickCloseEvent">close</button>
+            <button v-on:click="onClickQRCodeEvent">qrcode</button>
           </div>
         </div>
     </div>
@@ -31,7 +33,9 @@ export default {
       title: '',
       location: '',
       body: '',
-      endDatetime: ''
+      eventDatetime: '',
+      isActivated: '',
+      eventHash: ''
     }
   },
   methods: {
@@ -41,7 +45,9 @@ export default {
       this.title = data.title
       this.body = data.body
       this.location = data.location
-      this.endDatetime = moment(data.end_datetime).format('YYYY-MM-DD HH:mm:ss')
+      this.eventDatetime = moment(data.event_datetime).format('YYYY-MM-DD HH:mm:ss')
+      this.isActivated = data.is_activated
+      this.eventHash = data.event_hash
     },
     onClickEditEvent () {
       this.$router.replace({ path: '/event/edit/' + this.$route.params.id }).catch(() => {})
@@ -49,6 +55,13 @@ export default {
     async onClickDestroyeEvent () {
       await API.destroyEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
       this.$router.replace({ path: '/' }).catch(() => {})
+    },
+    async onClickCloseEvent () {
+      await API.closeEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
+      this.$router.replace({ path: '/' }).catch(() => {})
+    },
+    onClickQRCodeEvent () {
+      this.$router.replace({ path: '/qrcode/' + this.eventHash }).catch(() => {})
     }
   },
   mounted () {
