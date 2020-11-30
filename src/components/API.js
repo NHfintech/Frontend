@@ -70,10 +70,10 @@ function destroyEventAPI ($http, host, id) {
   })
 }
 
-function endEventAPI ($http, host, id) {
+function closeEventAPI ($http, host, id) {
   return $http({
-    method: 'delete',
-    url: `${host}/event/${id}`,
+    method: 'put',
+    url: `${host}/event/close/${id}`,
   })
 }
   
@@ -88,5 +88,5 @@ export default {
     createEventAPI,
     updateEventAPI,
     destroyEventAPI,
-    endEventAPI
+    closeEventAPI
 }
