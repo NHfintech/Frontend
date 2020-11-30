@@ -30,9 +30,9 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-4 col-form-label" for="body">End Datetime</label>
+            <label class="col-4 col-form-label" for="body">Event Datetime</label>
             <div class="col-6">
-              <datetime type="datetime" v-model="endDatetime" use12-hour>{{endDatetime}}</datetime>
+              <datetime type="datetime" v-model="eventDatetime" use12-hour>{{eventDatetime}}</datetime>
             </div>
           </div>
           <div class="form-group row" v-for="index in eventAdminCount" :key=index>
@@ -49,6 +49,9 @@
         </div>
         <button v-on:click="onClickCreateEvent">
           Create Event
+        </button>
+        <button v-on:click="onClickCancelEvent">
+          Cancel
         </button>
     </div>
 </template>
@@ -69,7 +72,7 @@ export default {
       location: '',
       body: '',
       eventAdmin: [],
-      endDatetime: '',
+      eventDatetime: '',
       eventAdminCount: 1
     }
   },
@@ -81,11 +84,17 @@ export default {
         'location': this.location,
         'body': this.body,
         'eventAdmin': this.convertEventAdmin(),
-        'startDatetime': moment().format('YYYY-MM-DD HH:mm:ss'),
-        'endDatetime': moment(this.endDatetime).format('YYYY-MM-DD HH:mm:ss')
+        'eventDatetime': moment(this.eventDatetime).format('YYYY-MM-DD HH:mm:ss')
       }
       const res = await API.createEventAPI(this.$http, this.$env.apiUrl, data)
-      this.$router.replace({ path: '/event/' + res.data.id }).catch(() => {})
+      if (res.data.result !== 0) {
+        alert(res.data.detail)
+        return
+      }
+      this.$router.replace({ path: '/event/' + res.data.data.id }).catch(() => {})
+    },
+    onClickCancelEvent () {
+      this.$router.replace({ path: '/' }).catch(() => {})
     },
     addEventAdmin () {
       this.eventAdminCount += 1
