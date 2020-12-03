@@ -9,7 +9,7 @@ import VueQrcode from 'vue-qrcode'
 export default {
   data () {
     return {
-      transferUrl: 'naver.com'
+      transferUrl: `${this.$env.hostUrl}/fin/transfer/${this.$route.params.hash}`
     }
   },
   components: {
