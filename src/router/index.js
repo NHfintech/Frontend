@@ -8,6 +8,7 @@ import Event from '@/views/Event'
 import EventCreate from '@/views/EventCreate'
 import EventEdit from '@/views/EventEdit'
 import QRCode from '@/views/QRCode'
+import FinAccount from '@/views/FinAccount'
 import FinTransfer from '@/views/FinTransfer'
 
 Vue.use(Router)
@@ -54,6 +55,13 @@ let router = new Router({
     {
       path: '/qrcode/:hash',
       component: QRCode,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/fin/account',
+      component: FinAccount,
       meta: {
         requiresAuth: true
       }

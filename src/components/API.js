@@ -76,6 +76,14 @@ function closeEventAPI ($http, host, id) {
     url: `${host}/event/close/${id}`,
   })
 }
+
+function linkAccountAPI ($http, host, data) {
+  return $http({
+    method: 'post',
+    url: `${host}/fin`,
+    data
+  })
+}
   
 // noinspection JSUnusedGlobalSymbols
 export default {
@@ -88,5 +96,6 @@ export default {
     createEventAPI,
     updateEventAPI,
     destroyEventAPI,
-    closeEventAPI
+    closeEventAPI,
+    linkAccountAPI
 }
