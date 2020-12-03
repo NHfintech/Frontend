@@ -84,6 +84,14 @@ function linkAccountAPI ($http, host, data) {
     data
   })
 }
+
+function finTransferAPI ($http, host, data) {
+  return $http({
+    method: 'post',
+    url: `${host}/fin/transfer`,
+    data
+  })
+}
   
 // noinspection JSUnusedGlobalSymbols
 export default {
@@ -97,5 +105,6 @@ export default {
     updateEventAPI,
     destroyEventAPI,
     closeEventAPI,
-    linkAccountAPI
+    linkAccountAPI,
+    finTransferAPI
 }

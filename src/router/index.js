@@ -67,7 +67,7 @@ let router = new Router({
       }
     },
     {
-      path: '/fin/transfer',
+      path: '/fin/transfer/:hash',
       component: FinTransfer,
       meta: {
         requiresAuth: true
