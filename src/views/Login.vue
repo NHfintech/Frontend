@@ -76,7 +76,7 @@
       </div>
     </div>
     <footer class="mt-5 col-12 footer text-center">
-      <button class="col-10 mx-auto mb-3 py-2 font-13 btn btn-block btn-light rounded-pill border-secondary" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveLogin?login():isActiveLogin=!isActiveLogin ">로그인</button>
+      <button class="col-10 mx-auto mb-3 py-2 font-13 btn btn-block btn-light rounded-pill border-secondary" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveLogin?login(0):isActiveLogin=!isActiveLogin ">로그인</button>
       <button class="col-10 mx-auto mt-3 py-2 font-13 btn btn-block btn-light rounded-pill border-success" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveSignup?signup():isActiveSignup=!isActiveSignup ">회원가입</button>
     </footer>
     </div>
@@ -121,25 +121,26 @@ export default {
 
   },
   methods: {
-    login: function () {
+    login: function (fromSignUp) {
       const data = {
         username: this.username,
         password: this.userPassword
       }
-      API.signInAPI(this.$http, this.$env.apiUrl, data)
-        .then(res => {
-          const token = res.data.token
-          const user = res.data.user
-          this.$http.defaults.headers.common['Authorization'] = token
-          this.$store.commit('saveUser', user)
-          this.$store.commit('saveToken', token)
-          this.$router.push('/')
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      API.signInAPI(this.$http, this.$env.apiUrl, data).then(res => {
+        const token = res.data.token
+        const user = res.data.user
+        this.$http.defaults.headers.common['Authorization'] = token
+        this.$store.commit('saveUser', user)
+        this.$store.commit('saveToken', token)
+      }).catch(err => {
+        console.log(err)
+      })
+      if (fromSignUp) {
+        this.$router.push('/fin/account')
+      } else {
+        this.$router.push('/')
+      }
     },
-
     signup: function () {
       const data = {
         username: this.username,
@@ -149,7 +150,7 @@ export default {
       }
       API.signUpAPI(this.$http, this.$env.apiUrl, data).then(res => {
         console.log(res.data)
-        alert(res.data.detail)
+        this.login(1)
       })
     }
   }

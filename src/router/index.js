@@ -9,6 +9,7 @@ import Event from '@/views/Event'
 import EventCreate from '@/views/EventCreate'
 import EventEdit from '@/views/EventEdit'
 import QRCode from '@/views/QRCode'
+import FinAccount from '@/views/FinAccount'
 import FinTransfer from '@/views/FinTransfer'
 
 Vue.use(Router)
@@ -64,7 +65,14 @@ let router = new Router({
       }
     },
     {
-      path: '/fin/transfer',
+      path: '/fin/account',
+      component: FinAccount,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/fin/transfer/:hash',
       component: FinTransfer,
       meta: {
         requiresAuth: true
