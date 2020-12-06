@@ -10,6 +10,7 @@ import EventEdit from '@/views/EventEdit'
 import QRCode from '@/views/QRCode'
 import FinAccount from '@/views/FinAccount'
 import FinTransfer from '@/views/FinTransfer'
+import Invite from '@/views/Invite'
 
 Vue.use(Router)
 
@@ -72,6 +73,10 @@ let router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/invite/:hash',
+      component: Invite
     }
   ]
 })

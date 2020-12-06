@@ -135,10 +135,11 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+      const next = this.$route.query.next === undefined ? '' : '/?next=' + this.$route.query.next
       if (fromSignUp) {
-        this.$router.push('/fin/account')
+        this.$router.push('/fin/account' + next)
       } else {
-        this.$router.push('/')
+        next === '' ? this.$router.push('/') : this.$router.push(this.$route.query.next)
       }
     },
     signup: function () {
@@ -149,7 +150,6 @@ export default {
         phone_number: this.phoneNumber
       }
       API.signUpAPI(this.$http, this.$env.apiUrl, data).then(res => {
-        console.log(res.data)
         this.login(1)
       })
     }
