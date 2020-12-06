@@ -57,7 +57,8 @@ export default {
         alert(res.data.detail)
         return
       }
-      this.$router.replace({ path: '/' }).catch(() => {})
+      const next = this.$route.query.next === undefined ? '/' : this.$route.query.next
+      this.$router.replace({ path: next }).catch(() => {})
     }
   }
 }

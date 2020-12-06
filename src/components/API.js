@@ -92,6 +92,14 @@ function finTransferAPI ($http, host, data) {
     data
   })
 }
+
+function inviteAPI ($http, host, data) {
+  return $http({
+    method: 'post',
+    url: `${host}/invite/:hash`,
+    params: data
+  })
+}
   
 // noinspection JSUnusedGlobalSymbols
 export default {
@@ -106,5 +114,6 @@ export default {
     destroyEventAPI,
     closeEventAPI,
     linkAccountAPI,
-    finTransferAPI
+    finTransferAPI,
+    inviteAPI
 }
