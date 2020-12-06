@@ -132,15 +132,16 @@ export default {
         this.$http.defaults.headers.common['Authorization'] = token
         this.$store.commit('saveUser', user)
         this.$store.commit('saveToken', token)
+
+        const next = this.$route.query.next === undefined ? '' : '/?next=' + this.$route.query.next
+        if (fromSignUp) {
+          this.$router.push('/fin/account' + next)
+        } else {
+          next === '' ? this.$router.push('/') : this.$router.push(this.$route.query.next)
+        }
       }).catch(err => {
         console.log(err)
       })
-      const next = this.$route.query.next === undefined ? '' : '/?next=' + this.$route.query.next
-      if (fromSignUp) {
-        this.$router.push('/fin/account' + next)
-      } else {
-        next === '' ? this.$router.push('/') : this.$router.push(this.$route.query.next)
-      }
     },
     signup: function () {
       const data = {
