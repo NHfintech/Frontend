@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div class="main-panel">
+      <div class="content">
+        <router-view/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -16,6 +20,7 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap');
 #app {
   /* min-height: 100%; */
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -24,16 +29,46 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+.bg-custom{
+  background-color: #f4f3ef;
+}
 .font-13{
   font-size:13px
 }
 .font-10{
   font-size:10px
 }
+.font-11{
+  font-size:11px
+}
 .font-do{
-  font-family: 'Do Hyeon', sans-serif;
+  font-family: 'Nanum Gothic Coding', monospace;
+}
+.font-spacing-1{
+  letter-spacing: -1px;
 }
 .bg-custom-light{
   background:rgb(234, 234, 234);
+}
+.bg-custom-pink{
+  background: rgba(224, 142, 177, 0.3) !important
+}
+.bg-custom-grey{
+  background: #777
+}
+.bg-pink{
+  background-color: rgba(224, 142, 177, 0.10 ) !important
+}
+.bg-gray{
+  background-color: rgba(30,30,30, 0.03 ) !important
+}
+.content{
+  min-height:100vh !important
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 </style>

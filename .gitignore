@@ -16,3 +16,4 @@ yarn-error.log*
 node_modules
 /static/settings-local.js
 package-lock.json
+yarn.lock

@@ -11,10 +11,11 @@ import EventEdit from '@/views/EventEdit'
 import QRCode from '@/views/QRCode'
 import FinAccount from '@/views/FinAccount'
 import FinTransfer from '@/views/FinTransfer'
+import Invite from '@/views/Invite'
 
 Vue.use(Router)
 
-let router = new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -77,6 +78,10 @@ let router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/invite/:hash',
+      component: Invite
     }
   ]
 })
@@ -86,7 +91,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.token === undefined) {
       next({
         path: '/login',
-        params: {nextUrl: to.fullPath}
+        params: { nextUrl: to.fullPath }
       })
     } else {
       next()
