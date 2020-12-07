@@ -32,7 +32,7 @@
           <div class="form-group row">
             <label class="col-4 col-form-label" for="body">End Datetime</label>
             <div class="col-6">
-              <datetime type="datetime" v-model="eventDatetime" use12-hour>{{eventDatetime}}</datetime>
+              <datetime type="datetime" v-model="endDatetime" use12-hour>{{endDatetime}}</datetime>
             </div>
           </div>
           <div class="form-group row" v-for="index in eventAdminCount" :key=index>
@@ -49,9 +49,6 @@
         </div>
         <button v-on:click="onClickEditEvent">
           Edit Event
-        </button>
-        <button v-on:click="onClickCancelEvent">
-          Cancel
         </button>
     </div>
 </template>
@@ -72,37 +69,30 @@ export default {
       location: '',
       body: '',
       eventAdmin: [],
-      eventDatetime: '',
+      endDatetime: '',
       eventAdminCount: 1
     }
   },
   methods: {
     async onClickEditEvent () {
       const data = {
-        'category': this.category,
-        'title': this.title,
-        'location': this.location,
-        'body': this.body,
-        'eventAdmin': this.convertEventAdmin(),
-        'startDatetime': moment().format('YYYY-MM-DD HH:mm:ss'),
-        'eventDatetime': moment(this.eventDatetime).format('YYYY-MM-DD HH:mm:ss')
+        category: this.category,
+        title: this.title,
+        location: this.location,
+        body: this.body,
+        eventAdmin: this.convertEventAdmin(),
+        startDatetime: moment().format('YYYY-MM-DD HH:mm:ss'),
+        endDatetime: moment(this.endDatetime).format('YYYY-MM-DD HH:mm:ss')
       }
       const res = await API.updateEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id, data)
-      if (res.data.result !== 0) {
-        alert(res.data.detail)
-        return
-      }
-      this.$router.replace({ path: '/event/' + this.$route.params.id }).catch(() => {})
-    },
-    onClickCancelEvent () {
-      this.$router.replace({ path: '/event/' + this.$route.params.id }).catch(() => {})
+      this.$router.replace({ path: '/event/' + res.data.id }).catch(() => {})
     },
     addEventAdmin () {
-      console.log(this.eventDatetime)
+      console.log(this.endDatetime)
       this.eventAdminCount += 1
     },
     convertEventAdmin () {
-      let eventAdmin = []
+      const eventAdmin = []
       for (const key in this.eventAdmin) {
         eventAdmin.push(this.eventAdmin[key])
       }
@@ -116,7 +106,7 @@ export default {
       this.body = data.body
       this.location = data.location
       // this.eventAdmin = data.event_admin
-      this.eventDatetime = moment(data.event_datetime).toISOString()
+      this.endDatetime = moment(data.end_datetime).toISOString()
     }
   },
   mounted () {

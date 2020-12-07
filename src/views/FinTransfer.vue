@@ -30,9 +30,9 @@ export default {
   methods: {
     async onClickTransferEvent () {
       const data = {
-        'tram': this.tram,
-        'message': this.message,
-        'event_hash': this.$route.params.hash
+        tram: this.tram,
+        message: this.message,
+        event_hash: this.$route.params.hash
       }
       const res = await API.finTransferAPI(this.$http, this.$env.apiUrl, data)
       if (res.data.result !== 0) {
