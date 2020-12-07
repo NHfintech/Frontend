@@ -5,6 +5,7 @@
           <td>{{dd.name}}</td>
           <td>{{dd.money}}</td>
           <td>{{dd.transfer_datetime}}</td>
+          <td v-if="dd.isDirectInput"><button v-on:click="onClickDeleteBreakdownEvent(dd.id)"></button></td>
         </tr>
       </table>
       <input type="text" v-model="directInputSenderName" placeholder="sender">
@@ -31,7 +32,7 @@ export default {
       const data = {
         'name': this.directInputSenderName,
         'money': this.directInputAmount,
-        'event_id': this.$route.params.id
+        'eventId': this.$route.params.id
       }
       const res = await API.createBreakdownAPI(this.$http, this.$env.apiUrl, data)
       if (res !== 0) {

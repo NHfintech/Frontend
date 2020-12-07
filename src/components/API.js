@@ -93,10 +93,10 @@ function finTransferAPI ($http, host, data) {
   })
 }
 
-function inviteAPI ($http, host, data) {
+function inviteAPI ($http, host, hash, data) {
   return $http({
-    method: 'post',
-    url: `${host}/invite/:hash`,
+    method: 'get',
+    url: `${host}/event/invite/${hash}`,
     params: data
   })
 }
