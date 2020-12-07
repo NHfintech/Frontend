@@ -55,6 +55,7 @@
         </b-tab>
         <b-tab title="QR Code">
           <vue-qrcode class="col-12" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="transferUrl" />
+          <img v-on:click="onClickShareEvent" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
         </b-tab>
         <!-- <b-tab v-if="userId==$store.state.user.id" title="Setting">
           <vue-qrcode class="col-12" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="transferUrl" />
@@ -131,7 +132,7 @@
     },
     onClickShareEvent () {
       const webUrl = `${this.$env.hostUrl}/invite/${this.eventHash}/?hostId=${this.$store.state.user.id}`
-      window.Kakao.Link.sendDefault({
+      Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
           title: '딸기 희승 케익',

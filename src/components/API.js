@@ -94,26 +94,26 @@ return $http({
 }
 
 function inviteAPI ($http, host, data) {
-return $http({
-  method: 'post',
-  url: `${host}/invite/:hash`,
-  params: data
-})
+  return $http({
+    method: 'post',
+    url: `${host}/invite/:hash`,
+    params: data
+  })
 }
-
+  
 // noinspection JSUnusedGlobalSymbols
 export default {
-  httpTest,
-  signInAPI,
-  signUpAPI,
-  checkingOverlapAPI,
-  getEventListAPI,
-  getEventAPI,
-  createEventAPI,
-  updateEventAPI,
-  destroyEventAPI,
-  closeEventAPI,
-  linkAccountAPI,
-  finTransferAPI,
-  inviteAPI
+    httpTest,
+    signInAPI,
+    signUpAPI,
+    checkingOverlapAPI,
+    getEventListAPI,
+    getEventAPI,
+    createEventAPI,
+    updateEventAPI,
+    destroyEventAPI,
+    closeEventAPI,
+    linkAccountAPI,
+    finTransferAPI,
+    inviteAPI
 }

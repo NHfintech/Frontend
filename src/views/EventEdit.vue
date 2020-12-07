@@ -29,12 +29,12 @@
               <input class="form-control" type="text" v-model="location">
             </div>
           </div>
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label class="col-4 col-form-label" for="body">End Datetime</label>
             <div class="col-6">
               <datetime type="datetime" v-model="endDatetime" use12-hour>{{endDatetime}}</datetime>
             </div>
-          </div>
+          </div> -->
           <div class="form-group row" v-for="index in eventAdminCount" :key=index>
             <label v-if="index  == 1" class="col-4 col-form-label" for="eventAdmin">eventAdmin</label>
             <label v-else class="col-4 col-form-label" for="eventAdmin"></label>
@@ -53,13 +53,13 @@
     </div>
 </template>
 <script>
-import Vue from 'vue'
+// import Vue from 'vue'
 import API from '../components/API'
 import moment from 'moment'
-import Datetime from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.css'
+// import Datetime from 'vue-datetime'
+// import 'vue-datetime/dist/vue-datetime.css'
 
-Vue.use(Datetime)
+// Vue.use(Datetime)
 
 export default {
   data () {
