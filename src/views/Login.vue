@@ -75,9 +75,10 @@
         </b-input-group>
       </div>
     </div>
-    <footer class="mt-5 col-12 footer text-center">
-      <button class="col-10 mx-auto mb-3 py-2 font-13 btn btn-block btn-light rounded-pill border-secondary" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveLogin?login(0):isActiveLogin=!isActiveLogin ">로그인</button>
-      <button class="col-10 mx-auto mt-3 py-2 font-13 btn btn-block btn-light rounded-pill border-success" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveSignup?signup():isActiveSignup=!isActiveSignup ">회원가입</button>
+    <footer class="col-12 footer text-center">
+      <button v-if='!isActiveLogin&&!isActiveSignup' class="col-10 mx-auto mb-3 py-2 font-13 btn btn-block btn-light rounded-pill border-secondary" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveLogin=!isActiveLogin ">로그인</button>
+      <button v-if='!isActiveLogin&&!isActiveSignup' class="col-10 mx-auto mt-3 py-2 font-13 btn btn-block btn-light rounded-pill border-success" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveSignup=!isActiveSignup ">회원가입</button>
+      <button v-if='isActiveLogin||isActiveSignup' class="btn py-3 btn-success rounded-circle border-success" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveLogin?login():signup() "><b-icon  scale="1.5" variant="dark" icon="arrow-right"></b-icon></button>
     </footer>
     </div>
   </div>
@@ -115,7 +116,7 @@ export default {
     },
     valiPhoneNumber () {
       if (this.phoneNumber.length === 0) return null
-      var temp = this.phoneNumber.replaceAll('-', '')
+      const temp = this.phoneNumber.replaceAll('-', '')
       return temp.length === 11 && temp.substr(0, 3) === '010'
     }
 
@@ -126,21 +127,27 @@ export default {
         username: this.username,
         password: this.userPassword
       }
-      API.signInAPI(this.$http, this.$env.apiUrl, data).then(res => {
-        const token = res.data.token
-        const user = res.data.user
-        this.$http.defaults.headers.common['Authorization'] = token
-        this.$store.commit('saveUser', user)
-        this.$store.commit('saveToken', token)
-      }).catch(err => {
-        console.log(err)
-      })
-      if (fromSignUp) {
-        this.$router.push('/fin/account')
-      } else {
-        this.$router.push('/')
-      }
+      API.signInAPI(this.$http, this.$env.apiUrl, data)
+        .then(res => {
+          const token = res.data.token
+          const user = res.data.user
+          this.$http.defaults.headers.common.Authorization = token
+          this.$store.commit('saveUser', user)
+          this.$store.commit('saveToken', token)
+          this.$router.push('/')
+
+          const next = this.$route.query.next === undefined ? '' : '/?next=' + this.$route.query.next
+          if (fromSignUp) {
+            this.$router.push('/fin/account' + next)
+          } else {
+            next === '' ? this.$router.push('/') : this.$router.push(this.$route.query.next)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
+
     signup: function () {
       const data = {
         username: this.username,
@@ -150,7 +157,8 @@ export default {
       }
       API.signUpAPI(this.$http, this.$env.apiUrl, data).then(res => {
         console.log(res.data)
-        this.login(1)
+        alert(res.data.detail)
+        if (res.data.result === 0) this.login(1)
       })
     }
   }
@@ -158,6 +166,9 @@ export default {
 </script>
 
 <style scoped>
+.height-max{
+  height: 100vh;
+}
 .footer{
   position: fixed;
   bottom: 10%;
@@ -169,7 +180,7 @@ export default {
   transition-duration: 0.3s;
   position: fixed;
   /* The image used */
-  background-image: url("~@/assets/bg-login.jpg");
+  background-image: url("~@/assets/bg.jpg");
 
   /* Add the blur effect */
   /* filter: blur(10px); */
