@@ -100,6 +100,35 @@ function inviteAPI ($http, host, data) {
     params: data
   })
 }
+
+function getEventBreakdownAPI ($http, host, id) {
+  return $http({
+    method: 'get',
+    url: `${host}/breakdown/event/${id}`,
+  })
+}
+
+function getMyBreakdownAPI ($http, host) {
+  return $http({
+    method: 'get',
+    url: `${host}/breakdown/sender`
+  })
+}
+
+function createBreakdownAPI ($http, host, data) {
+  return $http({
+    method: 'post',
+    url: `${host}/breakdown`,
+    data
+  })
+}
+
+function deleteBreakdownAPI ($http, host, id) {
+  return $http({
+    method: 'delete',
+    url: `${host}/breakdown/${id}`,
+  })
+}
   
 // noinspection JSUnusedGlobalSymbols
 export default {
@@ -115,5 +144,9 @@ export default {
     closeEventAPI,
     linkAccountAPI,
     finTransferAPI,
-    inviteAPI
+    inviteAPI,
+    getEventBreakdownAPI,
+    getMyBreakdownAPI,
+    createBreakdownAPI,
+    deleteBreakdownAPI
 }
