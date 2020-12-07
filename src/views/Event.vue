@@ -131,6 +131,7 @@ export default {
       this.$router.replace({ path: '/qrcode/' + this.eventHash }).catch(() => {})
     },
     onClickShareEvent () {
+      const webUrl = `${this.$env.hostUrl}/invite/${this.eventHash}/?hostId=${this.$store.state.user.id}`
       Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
