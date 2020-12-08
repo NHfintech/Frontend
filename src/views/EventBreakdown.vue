@@ -1,0 +1,59 @@
+<template>
+    <div>
+      <table>
+        <tr v-for="dd in breakdownList" :key = dd.id>
+          <td>{{dd.name}}</td>
+          <td>{{dd.money}}</td>
+          <td>{{dd.transfer_datetime}}</td>
+          <td v-if="dd.isDirectInput"><button v-on:click="onClickDeleteBreakdownEvent(dd.id)"></button></td>
+        </tr>
+      </table>
+      <input type="text" v-model="directInputSenderName" placeholder="sender">
+      <input type="text" v-model="directInputAmount" placeholder="amount">
+      <button v-on:click="onClickDirectInputEvent">add</button>
+    </div>
+</template>
+<script>
+import API from '../components/API'
+export default {
+  data () {
+    return {
+      breakdownList: [],
+      directInputAmount: '',
+      directInputSenderName: ''
+    }
+  },
+  methods: {
+    async fetchBreakdownList () {
+      const res = await API.getEventBreakdownAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
+      this.breakdownList = res.data.data
+    },
+    async onClickDirectInputEvent () {
+      const data = {
+        name: this.directInputSenderName,
+        money: this.directInputAmount,
+        eventId: this.$route.params.id
+      }
+      const res = await API.createBreakdownAPI(this.$http, this.$env.apiUrl, data)
+      if (res.data.result !== 0) {
+        alert(res.data.detail)
+        return
+      }
+      this.directInputAmount = ''
+      this.directInputSenderName = ''
+      this.fetchBreakdownList()
+    },
+    async onClickDeleteBreakdownEvent (breakdownId) {
+      const res = await API.deleteBreakdownAPI(this.$http, this.$env.apiUrl, breakdownId)
+      if (res.data.result !== 0) {
+        alert(res.data.detail)
+        return
+      }
+      this.fetchBreakdownList()
+    }
+  },
+  mounted () {
+    this.fetchBreakdownList()
+  }
+}
+</script>

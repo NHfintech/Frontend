@@ -7,7 +7,7 @@
     <b-navbar type="light" class="bg-custom">
       <b-navbar-nav>
         <b-nav-item href="#">이벤트</b-nav-item>
-        <b-nav-item href="#">송금 내역</b-nav-item>
+        <b-nav-item href="/breakdown">송금 내역</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->

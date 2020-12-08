@@ -12,6 +12,9 @@ import QRCode from '@/views/QRCode'
 import FinAccount from '@/views/FinAccount'
 import FinTransfer from '@/views/FinTransfer'
 import Invite from '@/views/Invite'
+import EventBreakdown from '@/views/EventBreakdown'
+import MyBreakDown from '@/views/MyBreakdown'
+import PageNotFound from '@/views/PageNotFound'
 
 Vue.use(Router)
 
@@ -22,8 +25,17 @@ const router = new Router({
       path: '/',
       component: Home,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresFinAccount: true
       }
+    },
+    {
+      path: '*',
+      redirect: '/404'
+    },
+    {
+      path: '/404',
+      component: PageNotFound
     },
     {
       path: '/signup',
@@ -41,28 +53,32 @@ const router = new Router({
       path: '/event/create',
       component: EventCreate,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresFinAccount: true
       }
     },
     {
       path: '/event/edit/:id',
       component: EventEdit,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresFinAccount: true
       }
     },
     {
       path: '/event/:id',
       component: Event,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresFinAccount: true
       }
     },
     {
       path: '/qrcode/:hash',
       component: QRCode,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresFinAccount: true
       }
     },
     {
@@ -76,12 +92,29 @@ const router = new Router({
       path: '/fin/transfer/:hash',
       component: FinTransfer,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresFinAccount: true
       }
     },
     {
       path: '/invite/:hash',
       component: Invite
+    },
+    {
+      path: '/event/:id/breakdown',
+      component: EventBreakdown,
+      meta: {
+        requiresAuth: true,
+        requiresFinAccount: true
+      }
+    },
+    {
+      path: '/breakdown',
+      component: MyBreakDown,
+      meta: {
+        requiresAuth: true,
+        requiresFinAccount: true
+      }
     }
   ]
 })
@@ -91,6 +124,21 @@ router.beforeEach((to, from, next) => {
     if (store.state.token === undefined) {
       next({
         path: '/login',
+        params: { nextUrl: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresFinAccount)) {
+    if (store.state.user.fin_account === null) {
+      next({
+        path: '/fin/account',
         params: { nextUrl: to.fullPath }
       })
     } else {

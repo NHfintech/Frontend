@@ -156,7 +156,6 @@ export default {
         phone_number: this.phoneNumber.replaceAll('-', '')
       }
       API.signUpAPI(this.$http, this.$env.apiUrl, data).then(res => {
-        console.log(res.data)
         alert(res.data.detail)
         if (res.data.result === 0) this.login(1)
       })

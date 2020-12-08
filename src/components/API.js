@@ -93,11 +93,40 @@ return $http({
 })
 }
 
-function inviteAPI ($http, host, data) {
+function inviteAPI ($http, host, hash, data) {
+  return $http({
+    method: 'get',
+    url: `${host}/event/invite/${hash}`,
+    params: data
+  })
+}
+
+function getEventBreakdownAPI ($http, host, id) {
+  return $http({
+    method: 'get',
+    url: `${host}/breakdown/event/${id}`,
+  })
+}
+
+function getMyBreakdownAPI ($http, host) {
+  return $http({
+    method: 'get',
+    url: `${host}/breakdown/sender`
+  })
+}
+
+function createBreakdownAPI ($http, host, data) {
   return $http({
     method: 'post',
-    url: `${host}/invite/:hash`,
-    params: data
+    url: `${host}/breakdown`,
+    data
+  })
+}
+
+function deleteBreakdownAPI ($http, host, id) {
+  return $http({
+    method: 'delete',
+    url: `${host}/breakdown/${id}`,
   })
 }
   
@@ -115,5 +144,9 @@ export default {
     closeEventAPI,
     linkAccountAPI,
     finTransferAPI,
-    inviteAPI
+    inviteAPI,
+    getEventBreakdownAPI,
+    getMyBreakdownAPI,
+    createBreakdownAPI,
+    deleteBreakdownAPI
 }
