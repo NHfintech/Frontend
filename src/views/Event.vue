@@ -63,7 +63,9 @@
         <template v-if="userId==$store.state.user.id" #tabs-end>
           <b-nav-item-dropdown text="Setting" variant="light" right style="background-color: #FCF3F7 !important; color: black !important;">
             <b-dropdown-item v-on:click="onClickEditEvent">edit</b-dropdown-item>
-            <b-dropdown-item v-on:click="onClickDestroyeEvent">delete</b-dropdown-item>
+            <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
+            <b-dropdown-item v-on:click="onClickCloseEvent">close</b-dropdown-item>
+            <b-dropdown-item v-on:click="onClickBreakdownEvent">breakdown</b-dropdown-item>
           </b-nav-item-dropdown>
         </template>
       </b-tabs>
@@ -118,13 +120,16 @@ export default {
     onClickEditEvent () {
       this.$router.replace({ path: '/event/edit/' + this.$route.params.id }).catch(() => {})
     },
-    async onClickDestroyeEvent () {
+    async onClickDestroyEvent () {
       await API.destroyEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
       this.$router.replace({ path: '/' }).catch(() => {})
     },
     async onClickCloseEvent () {
       await API.closeEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
       this.$router.replace({ path: '/' }).catch(() => {})
+    },
+    onClickBreakdownEvent () {
+      this.$router.replace({ path: `/event/${this.$route.params.id}/breakdown` }).catch(() => {})
     },
     onClickQRCodeEvent () {
       this.$router.replace({ path: '/qrcode/' + this.eventHash }).catch(() => {})
