@@ -14,6 +14,7 @@ import FinTransfer from '@/views/FinTransfer'
 import Invite from '@/views/Invite'
 import EventBreakdown from '@/views/EventBreakdown'
 import MyBreakDown from '@/views/MyBreakdown'
+import PageNotFound from '@/views/PageNotFound'
 
 Vue.use(Router)
 
@@ -26,6 +27,14 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '*',
+      redirect: '/404'
+    },
+    {
+      path: '/404',
+      component: PageNotFound
     },
     {
       path: '/signup',
@@ -57,7 +66,8 @@ const router = new Router({
       path: '/event/:id',
       component: Event,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        checkId: true
       }
     },
     {

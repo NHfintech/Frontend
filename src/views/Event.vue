@@ -74,6 +74,7 @@
 <script>Kakao.init('1cea813161beb949ad235005f477e237')</script>
 <script>
 import API from '../components/API'
+import errorcode from '../components/errorcode.json'
 import moment from 'moment'
 import VueQrcode from 'vue-qrcode'
 
@@ -100,6 +101,11 @@ export default {
   methods: {
     async getEvent () {
       const res = await API.getEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
+      console.log(errorcode.NO_DATA)
+      if(res.data.result === errorcode.NO_DATA) {
+        this.$router.replace({ path: '/404' }).catch(() => {})
+        return
+      }
       const data = res.data.data
       this.title = data.title
       this.body = data.body
