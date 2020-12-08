@@ -27,7 +27,17 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         requiresFinAccount: true
-      }
+      },
+      children: [
+        {
+          path: '/',
+          component: Main
+        },
+        {
+          path: '/breakdown',
+          component: MyBreakDown
+        }
+      ]
     },
     {
       path: '*',
@@ -45,10 +55,7 @@ const router = new Router({
       path: '/login',
       component: Login
     },
-    {
-      path: '/main',
-      component: Main
-    },
+
     {
       path: '/event/create',
       component: EventCreate,
@@ -103,14 +110,6 @@ const router = new Router({
     {
       path: '/event/:id/breakdown',
       component: EventBreakdown,
-      meta: {
-        requiresAuth: true,
-        requiresFinAccount: true
-      }
-    },
-    {
-      path: '/breakdown',
-      component: MyBreakDown,
       meta: {
         requiresAuth: true,
         requiresFinAccount: true
