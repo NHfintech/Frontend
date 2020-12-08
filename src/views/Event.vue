@@ -60,12 +60,15 @@
         <!-- <b-tab v-if="userId==$store.state.user.id" title="Setting">
           <vue-qrcode class="col-12" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="transferUrl" />
         </b-tab> -->
-        <template v-if="userId==$store.state.user.id" #tabs-end>
+        <template #tabs-end>
           <b-nav-item-dropdown text="Setting" variant="light" right style="background-color: #FCF3F7 !important; color: black !important;">
-            <b-dropdown-item v-on:click="onClickEditEvent">edit</b-dropdown-item>
-            <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
-            <b-dropdown-item v-on:click="onClickCloseEvent">close</b-dropdown-item>
-            <b-dropdown-item v-on:click="onClickBreakdownEvent">breakdown</b-dropdown-item>
+            <div v-if="userType==='master' || userType==='admin'">
+              <b-dropdown-item v-on:click="onClickEditEvent">edit</b-dropdown-item>
+              <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
+              <b-dropdown-item v-on:click="onClickCloseEvent">close</b-dropdown-item>
+              <b-dropdown-item v-on:click="onClickBreakdownEvent">breakdown</b-dropdown-item>
+            </div>
+            <div v-else>u r guest</div>
           </b-nav-item-dropdown>
         </template>
       </b-tabs>
@@ -97,13 +100,13 @@ export default {
                 부디 참석하시어 기쁨의 자리를 축복하고
                 더욱 빛내어 주시기 바랍니다.`,
       endDatetime: '2020-12-24 18:00:00',
-      userId: 0
+      userId: 0,
+      userType: ''
     }
   },
   methods: {
     async getEvent () {
       const res = await API.getEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
-      console.log(errorcode.NO_DATA)
       if(res.data.result === errorcode.NO_DATA) {
         this.$router.replace({ path: '/404' }).catch(() => {})
         return
@@ -116,6 +119,7 @@ export default {
       this.isActivated = data.is_activated
       this.eventHash = data.event_hash
       this.userId = data.user_id
+      this.userType = data.userType
     },
     onClickEditEvent () {
       this.$router.replace({ path: '/event/edit/' + this.$route.params.id }).catch(() => {})

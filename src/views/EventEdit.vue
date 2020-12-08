@@ -101,7 +101,6 @@ export default {
       this.$router.replace({ path: '/event/' + res.data.id }).catch(() => {})
     },
     addEventAdmin () {
-      console.log(this.endDatetime)
       this.eventAdminCount += 1
     },
     convertEventAdmin () {

@@ -39,6 +39,7 @@
 </template>
 <script>
 import API from '../components/API'
+import errorcode from '../components/errorcode.json'
 
 export default {
   data () {
@@ -54,11 +55,13 @@ export default {
         acno: this.accountNumber
       }
       const res = await API.linkAccountAPI(this.$http, this.$env.apiUrl, data)
-      if (res.data.result !== 0) {
+      if (res.data.result !== errorcode.SUCCESS) {
         alert(res.data.detail)
         return
       }
+      this.$store.state.user.fin_account = res.data.data.fin_account
       const next = this.$route.query.next === undefined ? '/' : this.$route.query.next
+      console.log(next)
       this.$router.replace({ path: next }).catch(() => {})
     },
     logout () {
