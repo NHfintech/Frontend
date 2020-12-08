@@ -12,6 +12,8 @@ import QRCode from '@/views/QRCode'
 import FinAccount from '@/views/FinAccount'
 import FinTransfer from '@/views/FinTransfer'
 import Invite from '@/views/Invite'
+import EventBreakdown from '@/views/EventBreakdown'
+import MyBreakDown from '@/views/MyBreakdown'
 
 Vue.use(Router)
 
@@ -82,6 +84,20 @@ const router = new Router({
     {
       path: '/invite/:hash',
       component: Invite
+    },
+    {
+      path: '/event/:id/breakdown',
+      component: EventBreakdown,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/breakdown',
+      component: MyBreakDown,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })

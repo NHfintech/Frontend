@@ -16,7 +16,7 @@ export default {
           hostId: this.$route.query.hostId
         }
         const res = await API.inviteAPI(this.$http, this.$env.apiUrl, this.$route.params.hash, data)
-        this.$router.replace({ path: '/event/' + res.data.event_id }).catch(() => {})
+        this.$router.replace({ path: '/event/' + res.data.data.event_id }).catch(() => {})
       }
     }
   },
