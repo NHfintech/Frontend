@@ -30,9 +30,9 @@ export default {
     },
     async onClickDirectInputEvent () {
       const data = {
-        'name': this.directInputSenderName,
-        'money': this.directInputAmount,
-        'eventId': this.$route.params.id
+        name: this.directInputSenderName,
+        money: this.directInputAmount,
+        eventId: this.$route.params.id
       }
       const res = await API.createBreakdownAPI(this.$http, this.$env.apiUrl, data)
       if (res.data.result !== 0) {
