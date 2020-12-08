@@ -100,14 +100,6 @@ function inviteAPI ($http, host, data) {
     params: data
   })
 }
-
-function inviteAPI ($http, host, data) {
-  return $http({
-    method: 'post',
-    url: `${host}/invite/:hash`,
-    params: data
-  })
-}
   
 // noinspection JSUnusedGlobalSymbols
 export default {
