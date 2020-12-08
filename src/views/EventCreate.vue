@@ -71,6 +71,18 @@
           ></b-form-input>
         </b-input-group>
       </div>
+      <div class="col-12 py-1">
+        <b-input-group class="mb-2">
+          <b-input-group-prepend is-text>
+            <b-icon icon="geo-alt-fill"></b-icon>
+          </b-input-group-prepend>
+          <b-form-input
+            v-model="invitationUrl"
+            type="text"
+            placeholder="URL"
+          ></b-form-input>
+        </b-input-group>
+      </div>
       <b-form-tags
         v-model="eventAdmin"
         no-outer-focus
@@ -143,6 +155,7 @@ export default {
       location: '',
       body: '',
       eventAdmin: [],
+      invitationUrl: '',
       eventDatetime: '시간',
       eventAdminCount: 1,
       options: [
@@ -160,6 +173,7 @@ export default {
         location: this.location,
         body: this.body,
         eventAdmin: this.convertEventAdmin(),
+        invitationUrl: this.invitationUrl,
         eventDatetime: moment(this.eventDatetime).format(
           'YYYY-MM-DD HH:mm:ss'
         )

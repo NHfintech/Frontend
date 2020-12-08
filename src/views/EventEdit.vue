@@ -35,6 +35,18 @@
               <datetime type="datetime" v-model="endDatetime" use12-hour>{{endDatetime}}</datetime>
             </div>
           </div> -->
+          <div class="col-12 py-1">
+            <b-input-group class="mb-2">
+              <b-input-group-prepend is-text>
+              <b-icon icon="geo-alt-fill"></b-icon>
+              </b-input-group-prepend>
+              <b-form-input
+                v-model="invitationUrl"
+                type="text"
+                placeholder="URL">
+              </b-form-input>
+            </b-input-group>
+          </div>
           <div class="form-group row" v-for="index in eventAdminCount" :key=index>
             <label v-if="index  == 1" class="col-4 col-form-label" for="eventAdmin">eventAdmin</label>
             <label v-else class="col-4 col-form-label" for="eventAdmin"></label>
@@ -69,6 +81,7 @@ export default {
       location: '',
       body: '',
       eventAdmin: [],
+      invitationUrl: '',
       endDatetime: '',
       eventAdminCount: 1
     }
@@ -80,15 +93,14 @@ export default {
         title: this.title,
         location: this.location,
         body: this.body,
+        invitationUrl: this.invitationUrl(),
         eventAdmin: this.convertEventAdmin(),
-        startDatetime: moment().format('YYYY-MM-DD HH:mm:ss'),
         endDatetime: moment(this.endDatetime).format('YYYY-MM-DD HH:mm:ss')
       }
       const res = await API.updateEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id, data)
       this.$router.replace({ path: '/event/' + res.data.id }).catch(() => {})
     },
     addEventAdmin () {
-      console.log(this.endDatetime)
       this.eventAdminCount += 1
     },
     convertEventAdmin () {
@@ -105,6 +117,7 @@ export default {
       this.title = data.title
       this.body = data.body
       this.location = data.location
+      this.invitationUrl = data.invitation_url
       // this.eventAdmin = data.event_admin
       this.endDatetime = moment(data.end_datetime).toISOString()
     }
