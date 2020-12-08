@@ -5,12 +5,13 @@
     </div>
     <div class="container-fluid">
       <b-tabs
+        fill
         pills
         active-nav-item-class="bg-custom-pink text-dark font-weight-bold"
         class="font-do no-gutters"
         content-class="mt-3"
       >
-        <b-tab class="font-do" title="Detail" active>
+        <b-tab class="font-do" title="내용" active>
           <div class="card text-left pl-3 pb-3 font-13 container">
             <h5 class="mt-1 mb-2 font-weight-bold pt-3">
               {{ title }}
@@ -39,10 +40,10 @@
             </div>
           </div>
         </b-tab>
-        <b-tab title="URL">
+        <b-tab title="청첩장">
           <div style="height:100vh">
             <iframe
-              src="https://www.itscard.co.kr/mobile/new_m/mcard/minifyHTML/MCard32.asp"
+              :src="invitation_url"
               name="b"
               width="100%"
               height="100%"
@@ -53,22 +54,29 @@
             </iframe>
           </div>
         </b-tab>
-        <b-tab title="QR Code">
-          <vue-qrcode class="col-12" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="transferUrl" />
-          <img v-on:click="onClickShareEvent" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
+        <b-tab title="QR">
+          <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="transferUrl" />
+          <div class="row text-center no-gutters col-12">
+            <div class="col-10 font-na font-20">카톡으로 송금 링크 공유하기</div>
+            <img v-on:click="onClickShareEvent" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
+          </div>
         </b-tab>
-        <!-- <b-tab v-if="userId==$store.state.user.id" title="Setting">
-          <vue-qrcode class="col-12" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="transferUrl" />
-        </b-tab> -->
-        <template #tabs-end>
-          <b-nav-item-dropdown text="Setting" variant="light" right style="background-color: #FCF3F7 !important; color: black !important;">
-            <div v-if="userType==='master' || userType==='admin'">
-              <b-dropdown-item v-on:click="onClickEditEvent">edit</b-dropdown-item>
-              <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
-              <b-dropdown-item v-on:click="onClickCloseEvent">close</b-dropdown-item>
-              <b-dropdown-item v-on:click="onClickBreakdownEvent">breakdown</b-dropdown-item>
+        <b-tab title="내역" v-if="userType==='master' || userType==='admin'" lazy>
+          <event-breakdown/>
+        </b-tab>
+        <template v-if="userType==='master' || userType==='admin'" #tabs-end>
+          <b-nav-item-dropdown no-caret variant="light" right style="background-color: #FCF3F7 !important; color: black !important;">
+            <template #text>
+              <b-icon style="color: gray" icon="three-dots-vertical"></b-icon>
+            </template>
+            <div >
+              <div class="rounded shadow bg-white">
+                <b-dropdown-item v-on:click="onClickEditEvent">edit</b-dropdown-item>
+                <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
+                <b-dropdown-item v-on:click="onClickCloseEvent">close</b-dropdown-item>
+                <b-dropdown-item v-on:click="onClickBreakdownEvent">breakdown</b-dropdown-item>
+              </div>
             </div>
-            <div v-else>u r guest</div>
           </b-nav-item-dropdown>
         </template>
       </b-tabs>
@@ -82,10 +90,12 @@ import API from '../components/API'
 import errorcode from '../components/errorcode.json'
 import moment from 'moment'
 import VueQrcode from 'vue-qrcode'
+import EventBreakdown from './EventBreakdown.vue'
 
 export default {
   components: {
-    VueQrcode
+    VueQrcode,
+    EventBreakdown
   },
   data () {
     return {
@@ -101,6 +111,7 @@ export default {
                 더욱 빛내어 주시기 바랍니다.`,
       endDatetime: '2020-12-24 18:00:00',
       userId: 0,
+      invitation_url:"",
       userType: ''
     }
   },
@@ -112,9 +123,11 @@ export default {
         return
       }
       const data = res.data.data
+      console.log(data)
       this.title = data.title
       this.body = data.body
       this.location = data.location
+      this.invitation_url = data.invitation_url
       this.eventDatetime = moment(data.event_datetime).format('YYYY-MM-DD HH:mm:ss')
       this.isActivated = data.is_activated
       this.eventHash = data.event_hash

@@ -41,14 +41,20 @@ export default {
 .font-11{
   font-size:11px
 }
+.font-20{
+  font-size:20px
+}
 .font-do{
   font-family: 'Nanum Gothic Coding', monospace;
+}
+.font-na{
+  font-family: 'Do Hyeon', sans-serif;
 }
 .font-spacing-1{
   letter-spacing: -1px;
 }
 .bg-custom-light{
-  background:rgb(234, 234, 234);
+  background:rgb(255, 255, 255) !important;
 }
 .bg-custom-pink{
   background: rgba(224, 142, 177, 0.3) !important

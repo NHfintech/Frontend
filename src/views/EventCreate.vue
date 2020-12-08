@@ -160,7 +160,7 @@ export default {
       eventAdminCount: 1,
       options: [
         { text: '종류', value: null, disabled: true },
-        { text: '결혼', value: 'marriage' },
+        { text: '결혼', value: 'Marriage' },
         { text: '장례', value: 'Funeral' }
       ]
     }
