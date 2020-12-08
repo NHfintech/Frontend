@@ -153,7 +153,7 @@ export default {
         username: this.username,
         password: this.userPassword,
         name: this.name,
-        phone_number: this.phoneNumber
+        phone_number: this.phoneNumber.replaceAll('-', '')
       }
       API.signUpAPI(this.$http, this.$env.apiUrl, data).then(res => {
         console.log(res.data)

@@ -120,10 +120,10 @@ export default {
       this.eventList = res.data.data
       for (const i of this.eventList) {
         switch (i.category) {
-          case 'marriage':
+          case 'Marriage':
             i.category = '결혼'
             break
-          case 'furniture':
+          case 'Funeral':
             i.category = '장례'
             break
           default:

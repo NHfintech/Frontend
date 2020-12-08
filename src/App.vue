@@ -54,7 +54,7 @@ export default {
   background: rgba(224, 142, 177, 0.3) !important
 }
 .bg-custom-grey{
-  background: #777
+  background: #777 !important
 }
 .bg-pink{
   background-color: rgba(224, 142, 177, 0.10 ) !important
