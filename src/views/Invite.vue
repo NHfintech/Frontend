@@ -13,7 +13,7 @@ export default {
         this.$router.replace({ path: '/login/?next=' + encodeURIComponent(this.$route.fullPath) }).catch(() => {})
       } else {
         const data = {
-          'hostId': this.$route.query.hostId
+          hostId: this.$route.query.hostId
         }
         const res = await API.inviteAPI(this.$http, this.$env.apiUrl, this.$route.params.hash, data)
         this.$router.replace({ path: '/event/' + res.data.event_id }).catch(() => {})

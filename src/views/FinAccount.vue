@@ -49,8 +49,8 @@ export default {
   methods: {
     async onClickLinkAccountEvent () {
       const data = {
-        'bncd': this.bankCode,
-        'acno': this.accountNumber
+        bncd: this.bankCode,
+        acno: this.accountNumber
       }
       const res = await API.linkAccountAPI(this.$http, this.$env.apiUrl, data)
       if (res.data.result !== 0) {

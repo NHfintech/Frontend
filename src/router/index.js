@@ -3,6 +3,7 @@ import store from '@/store/index'
 import Router from 'vue-router'
 import Signup from '@/views/Signup'
 import Login from '@/views/Login'
+import Main from '@/views/Main'
 import Home from '@/views/Home'
 import Event from '@/views/Event'
 import EventCreate from '@/views/EventCreate'
@@ -14,7 +15,7 @@ import Invite from '@/views/Invite'
 
 Vue.use(Router)
 
-let router = new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -31,6 +32,10 @@ let router = new Router({
     {
       path: '/login',
       component: Login
+    },
+    {
+      path: '/main',
+      component: Main
     },
     {
       path: '/event/create',
@@ -86,7 +91,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.token === undefined) {
       next({
         path: '/login',
-        params: {nextUrl: to.fullPath}
+        params: { nextUrl: to.fullPath }
       })
     } else {
       next()
