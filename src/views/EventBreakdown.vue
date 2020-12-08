@@ -35,15 +35,17 @@ export default {
         'eventId': this.$route.params.id
       }
       const res = await API.createBreakdownAPI(this.$http, this.$env.apiUrl, data)
-      if (res !== 0) {
+      if (res.data.result !== 0) {
         alert(res.data.detail)
         return
       }
+      this.directInputAmount = ''
+      this.directInputSenderName = ''
       this.fetchBreakdownList()
     },
     async onClickDeleteBreakdownEvent (breakdownId) {
       const res = await API.deleteBreakdownAPI(this.$http, this.$env.apiUrl, breakdownId)
-      if (res !== 0) {
+      if (res.data.result !== 0) {
         alert(res.data.detail)
         return
       }
