@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-on:click="logout()">sign out</div>
     <div class="form-group row">
       <label class="col-4 col-form-label" for="bank">Bank</label>
       <div class="col-6">
@@ -59,6 +60,10 @@ export default {
       }
       const next = this.$route.query.next === undefined ? '/' : this.$route.query.next
       this.$router.replace({ path: next }).catch(() => {})
+    },
+    logout () {
+      this.$store.commit('removeUser')
+      this.$router.replace({ path: '/login' }).catch(() => {})
     }
   }
 }
