@@ -144,8 +144,6 @@
 <script>
 import API from '../components/API'
 import moment from 'moment'
-// import Datetime from 'vue-datetime'
-// import 'vue-datetime/dist/vue-datetime.css'
 
 export default {
   data () {
