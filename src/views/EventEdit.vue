@@ -201,7 +201,7 @@ export default {
       this.location = data.location
       this.invitationUrl = data.invitation_url
       this.convertResponseEventAdmin(data.eventAdmin)
-      this.eventDatetime = moment(data.event_datetime).toISOString()
+      this.eventDatetime = moment(data.event_datetime).add(9, 'hours').toISOString()
     }
   },
   mounted () {
