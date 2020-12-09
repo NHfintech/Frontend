@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-pink" style="min-height:100vh">
+  <div :class="getBackgroundColour()" style="min-height:100vh">
     <div class="d-block py-3 pl-4 text-left">
       <router-link to="/">  <b-icon icon="arrow-left"  variant="dark" scale="2"></b-icon></router-link>
     </div>
@@ -36,7 +36,7 @@
           >
             <div class="col-12 row no-gutters pt-3">
               <i class="font-13 ti-calendar"></i>
-              <h5 class="ml-2">{{ endDatetime }}</h5>
+              <h5 class="ml-2">{{ eventDatetime }}</h5>
             </div>
           </div>
         </b-tab>
@@ -55,16 +55,17 @@
           </div>
         </b-tab>
         <b-tab title="QR">
-          <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="transferUrl" />
+          <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="getTransferUrl()" />
           <div class="row text-center no-gutters col-12">
-            <div class="col-10 font-na font-20">카톡으로 송금 링크 공유하기</div>
+            <div class="col-10 font-na font-20">카카오톡으로 이벤트 공유하기</div>
             <img v-on:click="onClickShareEvent" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
           </div>
         </b-tab>
         <b-tab title="내역" v-if="userType==='master' || userType==='admin'" lazy>
-          <event-breakdown/>
+          <event-breakdown
+          :user-type="userType"/>
         </b-tab>
-        <template v-if="userType==='master' || userType==='admin'" #tabs-end>
+        <template v-if="userType==='master'" #tabs-end>
           <b-nav-item-dropdown no-caret variant="light" right style="background-color: #FCF3F7 !important; color: black !important;">
             <template #text>
               <b-icon style="color: gray" icon="three-dots-vertical"></b-icon>
@@ -74,7 +75,60 @@
                 <b-dropdown-item v-on:click="onClickEditEvent">edit</b-dropdown-item>
                 <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
                 <b-dropdown-item v-on:click="onClickCloseEvent">close</b-dropdown-item>
-                <b-dropdown-item v-on:click="onClickBreakdownEvent">breakdown</b-dropdown-item>
+                <b-dropdown-item v-b-modal.modal-prevent-closing>receive</b-dropdown-item>
+                <b-modal
+                  id="modal-prevent-closing"
+                  ref="modal"
+                  @show="resetModal"
+                  @hidden="resetModal"
+                  @ok="handleOk"
+                >
+                  <form ref="form" @submit.stop.prevent="handleSubmit">
+                    <b-form-group
+                      :state="nameState"
+                      label="은행"
+                      label-for="name-input"
+                    >
+                      <b-form-select
+                        id="bankCodeInput"
+                        v-model="bankCode"
+                        :state="nameState"
+                        required
+                      >
+                        <option value="">은행을 선택해 주세요.</option>
+                        <option value="011">(011) 농협은행</option>
+                        <option value="012">(012) 농협상호금융</option>
+                        <option value="002">(002) 산업은행</option>
+                        <option value="003">(003) 기업은행</option>
+                        <option value="004">(004) 국민은행</option>
+                        <option value="081">(081) KEB하나은행</option>
+                        <option value="020">(020) 우리은행</option>
+                        <option value="023">(023) SC제일은행</option>
+                        <option value="027">(027) 시티은행</option>
+                        <option value="032">(032) 대구은행</option>
+                        <option value="034">(034) 광주은행</option>
+                        <option value="035">(035) 제주은행</option>
+                        <option value="037">(037) 전북은행</option>
+                        <option value="039">(039) 경남은행</option>
+                        <option value="045">(045) 새마을금고</option>
+                        <option value="088">(088) 신한은행</option>
+                        <option value="090">(090) 카카오뱅크</option>
+                      </b-form-select>
+                    </b-form-group>
+                    <b-form-group
+                      :state="nameState"
+                      label="계좌번호"
+                      label-for="name-input"
+                    >
+                      <b-form-input
+                        id="name-input"
+                        v-model="accountNumber"
+                        :state="nameState"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </form>
+                </b-modal>
               </div>
             </div>
           </b-nav-item-dropdown>
@@ -99,7 +153,6 @@ export default {
   },
   data () {
     return {
-      transferUrl: `${this.$env.hostUrl}/fin/transfer/${this.eventHash}`,
       category: 'marriage',
       title: '홍길동 홍수지',
       location: '경기도 성남시 판교동',
@@ -109,10 +162,15 @@ export default {
                 한 가정을 이루고자 합니다.
                 부디 참석하시어 기쁨의 자리를 축복하고
                 더욱 빛내어 주시기 바랍니다.`,
-      endDatetime: '2020-12-24 18:00:00',
-      userId: 0,
+      eventDatetime: '2020-12-24 18:00:00',
       invitation_url:"",
-      userType: ''
+      isActivated: '',
+      userId: '',
+      eventHash: '',
+      userType: '',
+      bankCode: '',
+      accountNumber: '',
+      nameState: ''
     }
   },
   methods: {
@@ -123,7 +181,7 @@ export default {
         return
       }
       const data = res.data.data
-      console.log(data)
+      this.category = data.category
       this.title = data.title
       this.body = data.body
       this.location = data.location
@@ -175,6 +233,43 @@ export default {
           }
         ]
       })
+    },
+    async receiveDepositEvent () {
+      const data = {
+        event_hash: this.eventHash,
+        bcnd: this.bankCode,
+        acno: this.accountNumber
+      }
+      const res = await API.finReceiveAPI(
+        this.$http,
+        this.$env.apiUrl,
+        data
+      )
+      if (res.data.result !== errorcode.SUCCESS) {
+        alert(res.data.detail)
+      }
+    },
+    getTransferUrl () {
+      return `${this.$env.hostUrl}/fin/transfer/${this.eventHash}`
+    },
+    getBackgroundColour () {
+      return this.category === 'Funeral' ? 'bg-gray' : 'bg-pink'
+    },
+    checkFormValidity () {
+      const valid = this.$refs.form.checkValidity()
+      this.nameState = valid
+      return valid
+    },
+    resetModal () {
+    },
+    handleOk (bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
+    },
+    handleSubmit () {
+      this.receiveDepositEvent()
     }
   },
   mounted () {

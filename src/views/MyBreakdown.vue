@@ -85,7 +85,6 @@ export default {
   methods: {
     async fetchBreakdownList () {
       const res = await API.getMyBreakdownAPI(this.$http, this.$env.apiUrl)
-      console.log(res.data.data)
       if (res.data.data.length) this.breakdownList = res.data.data
     },
     async onClickDirectInputEvent (data) {

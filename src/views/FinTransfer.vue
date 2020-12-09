@@ -40,6 +40,7 @@ export default {
         return
       }
       alert('success')
+      this.$router.replace({ path: '/breakdown' }).catch(() => {})
     }
   }
 }

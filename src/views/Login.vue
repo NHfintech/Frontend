@@ -134,13 +134,12 @@ export default {
           this.$http.defaults.headers.common.Authorization = token
           this.$store.commit('saveUser', user)
           this.$store.commit('saveToken', token)
-          this.$router.push('/')
-
+          window.Android.getUserId(this.$store.state.user.id)
           const next = this.$route.query.next === undefined ? '' : '/?next=' + this.$route.query.next
           if (fromSignUp) {
             this.$router.push('/fin/account' + next)
           } else {
-            next === '' ? this.$router.push('/') : this.$router.push(this.$route.query.next)
+            next === '' ? this.$router.replace({ path: '/' }) : this.$router.replace({ path: this.$route.query.next })
           }
         })
         .catch(err => {

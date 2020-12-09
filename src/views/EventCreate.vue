@@ -69,6 +69,17 @@
             ref="loc"
             placeholder="위치"
           ></b-form-input>
+          <b-button v-b-modal.modal-prevent-closing>검색</b-button>
+          <b-modal
+            id="modal-prevent-closing"
+            ref="modal"
+            @show="resetModal"
+            @hidden="resetModal"
+            @ok="handleOk"
+          >
+            <vue-daum-postcode/>
+          </b-modal>
+
         </b-input-group>
       </div>
       <div class="col-12 py-1">
@@ -142,10 +153,12 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
 import API from '../components/API'
 import moment from 'moment'
-// import Datetime from 'vue-datetime'
-// import 'vue-datetime/dist/vue-datetime.css'
+import VueDaumPostcode from 'vue-daum-postcode'
+
+Vue.use(VueDaumPostcode)
 
 export default {
   data () {
