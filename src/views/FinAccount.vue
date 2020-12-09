@@ -61,7 +61,6 @@ export default {
       }
       this.$store.state.user.fin_account = res.data.data.fin_account
       const next = this.$route.query.next === undefined ? '/' : this.$route.query.next
-      console.log(next)
       this.$router.replace({ path: next }).catch(() => {})
     },
     logout () {

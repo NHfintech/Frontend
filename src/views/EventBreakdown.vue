@@ -149,7 +149,6 @@ export default {
     }
   },
   mounted () {
-    console.log('load')
     this.fetchBreakdownList()
   }
 }

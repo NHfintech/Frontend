@@ -36,7 +36,7 @@
           >
             <div class="col-12 row no-gutters pt-3">
               <i class="font-13 ti-calendar"></i>
-              <h5 class="ml-2">{{ endDatetime }}</h5>
+              <h5 class="ml-2">{{ eventDatetime }}</h5>
             </div>
           </div>
         </b-tab>
@@ -109,7 +109,7 @@ export default {
                 한 가정을 이루고자 합니다.
                 부디 참석하시어 기쁨의 자리를 축복하고
                 더욱 빛내어 주시기 바랍니다.`,
-      endDatetime: '2020-12-24 18:00:00',
+      eventDatetime: '2020-12-24 18:00:00',
       userId: 0,
       invitation_url:"",
       userType: ''
@@ -123,7 +123,6 @@ export default {
         return
       }
       const data = res.data.data
-      console.log(data)
       this.title = data.title
       this.body = data.body
       this.location = data.location

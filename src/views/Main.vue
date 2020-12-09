@@ -100,7 +100,6 @@ export default {
         data
       )
       this.eventList = res.data.data
-      console.log(this.eventList)
       for (const i of this.eventList) {
         switch (i.category) {
           case 'marriage' :
