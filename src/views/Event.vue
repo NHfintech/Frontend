@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-pink" style="min-height:100vh">
+  <div :class="getBackgroundColour()" style="min-height:100vh">
     <div class="d-block py-3 pl-4 text-left">
       <router-link to="/">  <b-icon icon="arrow-left"  variant="dark" scale="2"></b-icon></router-link>
     </div>
@@ -179,6 +179,9 @@ export default {
     },
     getTransferUrl () {
       return `${this.$env.hostUrl}/fin/transfer/${this.eventHash}`
+    },
+    getBackgroundColour () {
+      return this.category === 'Funeral' ? 'bg-gray' : 'bg-pink'
     }
   },
   mounted () {
