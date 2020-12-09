@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="col-md-6 col-xl-3 text-right ">
-        <div>
+        <div v-if="userType === 'master'">
           <b-button v-b-modal.modal-prevent-closing>수기로 추가하기</b-button>
           <b-modal
             id="modal-prevent-closing"
@@ -66,6 +66,9 @@ import BreakCard from '@/components/Cards/BreakCard.vue'
 import API from '../components/API'
 export default {
   name: 'event-breakdown',
+  props: {
+    userType: String
+  },
   components: {
     BreakCard
   },
@@ -139,7 +142,7 @@ export default {
       const data = {
         name: this.directInputSenderName,
         money: this.directInputAmount,
-        eventId: 1
+        eventId: this.$route.params.id
       }
       this.onClickDirectInputEvent(data)
       // Hide the modal manually

@@ -55,16 +55,17 @@
           </div>
         </b-tab>
         <b-tab title="QR">
-          <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="transferUrl" />
+          <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="getTransferUrl()" />
           <div class="row text-center no-gutters col-12">
-            <div class="col-10 font-na font-20">카톡으로 송금 링크 공유하기</div>
+            <div class="col-10 font-na font-20">카카오톡으로 이벤트 공유하기</div>
             <img v-on:click="onClickShareEvent" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
           </div>
         </b-tab>
         <b-tab title="내역" v-if="userType==='master' || userType==='admin'" lazy>
-          <event-breakdown/>
+          <event-breakdown
+          :user-type="userType"/>
         </b-tab>
-        <template v-if="userType==='master' || userType==='admin'" #tabs-end>
+        <template v-if="userType==='master'" #tabs-end>
           <b-nav-item-dropdown no-caret variant="light" right style="background-color: #FCF3F7 !important; color: black !important;">
             <template #text>
               <b-icon style="color: gray" icon="three-dots-vertical"></b-icon>
@@ -74,7 +75,6 @@
                 <b-dropdown-item v-on:click="onClickEditEvent">edit</b-dropdown-item>
                 <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
                 <b-dropdown-item v-on:click="onClickCloseEvent">close</b-dropdown-item>
-                <b-dropdown-item v-on:click="onClickBreakdownEvent">breakdown</b-dropdown-item>
               </div>
             </div>
           </b-nav-item-dropdown>
@@ -99,7 +99,6 @@ export default {
   },
   data () {
     return {
-      transferUrl: `${this.$env.hostUrl}/fin/transfer/${this.eventHash}`,
       category: 'marriage',
       title: '홍길동 홍수지',
       location: '경기도 성남시 판교동',
@@ -110,8 +109,10 @@ export default {
                 부디 참석하시어 기쁨의 자리를 축복하고
                 더욱 빛내어 주시기 바랍니다.`,
       eventDatetime: '2020-12-24 18:00:00',
-      userId: 0,
       invitation_url:"",
+      isActivated: '',
+      userId: '',
+      eventHash: '',
       userType: ''
     }
   },
@@ -123,6 +124,7 @@ export default {
         return
       }
       const data = res.data.data
+      this.category = data.category
       this.title = data.title
       this.body = data.body
       this.location = data.location
@@ -174,6 +176,9 @@ export default {
           }
         ]
       })
+    },
+    getTransferUrl () {
+      return `${this.$env.hostUrl}/fin/transfer/${this.eventHash}`
     }
   },
   mounted () {
