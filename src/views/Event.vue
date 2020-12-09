@@ -75,6 +75,60 @@
                 <b-dropdown-item v-on:click="onClickEditEvent">edit</b-dropdown-item>
                 <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
                 <b-dropdown-item v-on:click="onClickCloseEvent">close</b-dropdown-item>
+                <b-dropdown-item v-b-modal.modal-prevent-closing>receive</b-dropdown-item>
+                <b-modal
+                  id="modal-prevent-closing"
+                  ref="modal"
+                  @show="resetModal"
+                  @hidden="resetModal"
+                  @ok="handleOk"
+                >
+                  <form ref="form" @submit.stop.prevent="handleSubmit">
+                    <b-form-group
+                      :state="nameState"
+                      label="은행"
+                      label-for="name-input"
+                    >
+                      <b-form-select
+                        id="bankCodeInput"
+                        v-model="bankCode"
+                        :state="nameState"
+                        required
+                      >
+                        <option value="">은행을 선택해 주세요.</option>
+                        <option value="011">(011) 농협은행</option>
+                        <option value="012">(012) 농협상호금융</option>
+                        <option value="002">(002) 산업은행</option>
+                        <option value="003">(003) 기업은행</option>
+                        <option value="004">(004) 국민은행</option>
+                        <option value="081">(081) KEB하나은행</option>
+                        <option value="020">(020) 우리은행</option>
+                        <option value="023">(023) SC제일은행</option>
+                        <option value="027">(027) 시티은행</option>
+                        <option value="032">(032) 대구은행</option>
+                        <option value="034">(034) 광주은행</option>
+                        <option value="035">(035) 제주은행</option>
+                        <option value="037">(037) 전북은행</option>
+                        <option value="039">(039) 경남은행</option>
+                        <option value="045">(045) 새마을금고</option>
+                        <option value="088">(088) 신한은행</option>
+                        <option value="090">(090) 카카오뱅크</option>
+                      </b-form-select>
+                    </b-form-group>
+                    <b-form-group
+                      :state="nameState"
+                      label="계좌번호"
+                      label-for="name-input"
+                    >
+                      <b-form-input
+                        id="name-input"
+                        v-model="accountNumber"
+                        :state="nameState"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </form>
+                </b-modal>
               </div>
             </div>
           </b-nav-item-dropdown>
@@ -113,7 +167,10 @@ export default {
       isActivated: '',
       userId: '',
       eventHash: '',
-      userType: ''
+      userType: '',
+      bankCode: '',
+      accountNumber: '',
+      nameState: ''
     }
   },
   methods: {
@@ -177,11 +234,42 @@ export default {
         ]
       })
     },
+    async receiveDepositEvent () {
+      const data = {
+        event_hash: this.eventHash,
+        bcnd: this.bankCode,
+        acno: this.accountNumber
+      }
+      const res = await API.finReceiveAPI(
+        this.$http,
+        this.$env.apiUrl,
+        data
+      )
+      if (res.data.result !== errorcode.SUCCESS) {
+        alert(res.data.detail)
+      }
+    },
     getTransferUrl () {
       return `${this.$env.hostUrl}/fin/transfer/${this.eventHash}`
     },
     getBackgroundColour () {
       return this.category === 'Funeral' ? 'bg-gray' : 'bg-pink'
+    },
+    checkFormValidity () {
+      const valid = this.$refs.form.checkValidity()
+      this.nameState = valid
+      return valid
+    },
+    resetModal () {
+    },
+    handleOk (bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
+    },
+    handleSubmit () {
+      this.receiveDepositEvent()
     }
   },
   mounted () {
