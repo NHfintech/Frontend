@@ -94,59 +94,106 @@
           ></b-form-input>
         </b-input-group>
       </div>
-      <b-form-tags
-        v-model="eventAdmin"
-        no-outer-focus
-        class=" col-12 py-1 px-3 border-0 bg-unset"
-      >
-        <template
-          v-slot="{ tags, inputAttrs, inputHandlers, addTag, removeTag }"
-        >
-          <b-input-group aria-controls="my-custom-tags-list">
+      <div v-if="category==='wedding'">
+        <div class="col-12 py-1">
+          <b-input-group class="mb-2">
             <b-input-group-prepend is-text>
-              <b-icon icon="person-fill"></b-icon>
+              <b-icon icon="geo-alt-fill"></b-icon>
             </b-input-group-prepend>
-            <input
-              v-bind="inputAttrs"
-              v-on="inputHandlers"
-              placeholder="개최자"
-              class="form-control"
-            />
-            <b-input-group-append>
-              <b-button @click="addTag()" variant="primary">추가</b-button>
-            </b-input-group-append>
+            <b-form-input
+              v-model="partner"
+              type="text"
+              placeholder="신부/신랑"
+            ></b-form-input>
           </b-input-group>
-          <ul
-            id="my-custom-tags-list"
-            class="list-unstyled d-inline-flex flex-wrap mb-0"
-            aria-live="polite"
-            aria-atomic="false"
-            aria-relevant="additions removals"
+        </div>
+        <div class="col-12 py-1">
+          <b-input-group class="mb-2">
+            <b-form-input
+              v-model="myFather"
+              type="text"
+              placeholder="내 아빠"
+            ></b-form-input>
+          </b-input-group>
+          <b-input-group class="mb-2">
+            <b-form-input
+              v-model="myMother"
+              type="text"
+              placeholder="내 엄마"
+            ></b-form-input>
+          </b-input-group>
+        </div>
+        <div class="col-12 py-1">
+          <b-input-group class="mb-2">
+            <b-form-input
+              v-model="urFather"
+              type="text"
+              placeholder="니 아빠"
+            ></b-form-input>
+          </b-input-group>
+          <b-input-group class="mb-2">
+            <b-form-input
+              v-model="urMother"
+              type="text"
+              placeholder="니 엄마"
+            ></b-form-input>
+          </b-input-group>
+        </div>
+      </div>
+      <div v-if="category==='funeral'">
+        <b-form-tags
+          v-model="eventAdmin"
+          no-outer-focus
+          class=" col-12 py-1 px-3 border-0 bg-unset"
+        >
+          <template
+            v-slot="{ tags, inputAttrs, inputHandlers, addTag, removeTag }"
           >
-            <b-card
-              v-for="tag in tags"
-              :key="tag"
-              :id="`my-custom-tags-tag_${tag.replace(/\s/g, '_')}_`"
-              tag="li"
-              class="mt-1 mr-1"
-              body-class="py-1 pr-2 text-nowrap pl-4"
+            <b-input-group aria-controls="my-custom-tags-list">
+              <b-input-group-prepend is-text>
+                <b-icon icon="person-fill"></b-icon>
+              </b-input-group-prepend>
+              <input
+                v-bind="inputAttrs"
+                v-on="inputHandlers"
+                placeholder="개최자"
+                class="form-control"
+              />
+              <b-input-group-append>
+                <b-button @click="addTag()" variant="primary">추가</b-button>
+              </b-input-group-append>
+            </b-input-group>
+            <ul
+              id="my-custom-tags-list"
+              class="list-unstyled d-inline-flex flex-wrap mb-0"
+              aria-live="polite"
+              aria-atomic="false"
+              aria-relevant="additions removals"
             >
-              <strong>{{ tag }}</strong>
-              <b-button
-                @click="removeTag(tag)"
-                variant="link"
-                size="sm"
-                :aria-controls="
-                  `my-custom-tags-tag_${tag.replace(/\s/g, '_')}_`
-                "
-                >remove</b-button
+              <b-card
+                v-for="tag in tags"
+                :key="tag"
+                :id="`my-custom-tags-tag_${tag.replace(/\s/g, '_')}_`"
+                tag="li"
+                class="mt-1 mr-1"
+                body-class="py-1 pr-2 text-nowrap pl-4"
               >
-            </b-card>
-          </ul>
-        </template>
-      </b-form-tags>
+                <strong>{{ tag }}</strong>
+                <b-button
+                  @click="removeTag(tag)"
+                  variant="link"
+                  size="sm"
+                  :aria-controls="
+                    `my-custom-tags-tag_${tag.replace(/\s/g, '_')}_`
+                  "
+                  >remove
+                </b-button>
+              </b-card>
+            </ul>
+          </template>
+        </b-form-tags>
+      </div>
     </div>
-
     <button class="btn btn-block col-11 ml-3" v-on:click="onClickCreateEvent">
       Create Event
     </button>
@@ -173,24 +220,43 @@ export default {
       eventAdminCount: 1,
       options: [
         { text: '종류', value: null, disabled: true },
-        { text: '결혼', value: 'Marriage' },
-        { text: '장례', value: 'Funeral' }
-      ]
+        { text: '결혼', value: 'wedding' },
+        { text: '장례', value: 'funeral' }
+      ],
+      myMother: '',
+      myFather: '',
+      urMother: '',
+      urFather: '',
+      partner: ''
     }
   },
   methods: {
     async onClickCreateEvent () {
-      const data = {
+      const commonData = {
         category: this.category,
         title: this.title,
         location: this.location,
         body: this.body,
-        eventAdmin: this.convertEventAdmin(),
         invitationUrl: this.invitationUrl,
         eventDatetime: moment(this.eventDatetime).format(
           'YYYY-MM-DD HH:mm:ss'
         )
       }
+      let data = ''
+      if (this.category === 'wedding') {
+        data = {
+          myFather: this.myFather,
+          myMother: this.myMother,
+          urFather: this.urFather,
+          urMother: this.urMother,
+          partner: this.partner
+        }
+      } else if (this.category === 'funeral') {
+        data = {
+          eventAdmin: this.convertEventAdmin()
+        }
+      }
+      data = { ...commonData, ...data }
       const res = await API.createEventAPI(
         this.$http,
         this.$env.apiUrl,
@@ -220,7 +286,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
   .bg-unset {
     background-color: #FCF3F7;

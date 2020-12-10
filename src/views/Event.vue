@@ -153,17 +153,12 @@ export default {
   },
   data () {
     return {
-      category: 'marriage',
-      title: '홍길동 홍수지',
-      location: '경기도 성남시 판교동',
-      body: ` 부모님은 하늘로 부터 받은 최고의 선물이고
-                부부는 자신이 선택한 최고의 보물이라고 합니다.
-                저희 두사람이 아름다운 하늘빛 아래서
-                한 가정을 이루고자 합니다.
-                부디 참석하시어 기쁨의 자리를 축복하고
-                더욱 빛내어 주시기 바랍니다.`,
-      eventDatetime: '2020-12-24 18:00:00',
-      invitation_url:"",
+      category: '',
+      title: '',
+      location: '',
+      body: '',
+      eventDatetime: '',
+      invitation_url: '',
       isActivated: '',
       userId: '',
       eventHash: '',
@@ -253,7 +248,7 @@ export default {
       return `${this.$env.hostUrl}/fin/transfer/${this.eventHash}`
     },
     getBackgroundColour () {
-      return this.category === 'Funeral' ? 'bg-gray' : 'bg-pink'
+      return this.category === 'funeral' ? 'bg-gray' : 'bg-pink'
     },
     checkFormValidity () {
       const valid = this.$refs.form.checkValidity()

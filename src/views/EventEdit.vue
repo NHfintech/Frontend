@@ -4,17 +4,6 @@
       <router-link to="/">  <b-icon icon="arrow-left"  variant="dark" scale="2"></b-icon></router-link>
     </div>
     <div>
-      <div class="col-12 py-1">
-        <b-input-group class="mb-2">
-          <b-input-group-prepend is-text>
-            <b-icon icon="file-check-fill"></b-icon>
-          </b-input-group-prepend>
-          <b-form-select
-            v-model="category"
-            :options="options"
-          ></b-form-select>
-        </b-input-group>
-      </div>
       <div class="col-12 py-1 ">
         <b-input-group class="mb-2">
           <b-input-group-prepend is-text>
@@ -84,12 +73,13 @@
         </b-input-group>
       </div>
       <b-form-tags
+        v-if="category ==='funeral'"
         v-model="eventAdmin"
         no-outer-focus
         class=" col-12 py-1 px-3 border-0 bg-unset"
       >
         <template
-          v-slot="{ tags, inputAttrs, inputHandlers, addTag, removeTag }"
+          v-slot="{ tags, inputAttrs, inputHandlers, addTag }"
         >
           <b-input-group aria-controls="my-custom-tags-list">
             <b-input-group-prepend is-text>
@@ -121,15 +111,6 @@
               body-class="py-1 pr-2 text-nowrap pl-4"
             >
               <strong>{{ tag }}</strong>
-              <b-button
-                @click="removeTag(tag)"
-                variant="link"
-                size="sm"
-                :aria-controls="
-                  `my-custom-tags-tag_${tag.replace(/\s/g, '_')}_`
-                "
-                >remove</b-button
-              >
             </b-card>
           </ul>
         </template>
@@ -148,19 +129,14 @@ import moment from 'moment'
 export default {
   data () {
     return {
-      category: null,
+      category: '',
       title: '',
       location: '',
       body: '',
       eventAdmin: [],
       invitationUrl: '',
       eventDatetime: '시간',
-      eventAdminCount: 1,
-      options: [
-        { text: '종류', value: null, disabled: true },
-        { text: '결혼', value: 'Marriage' },
-        { text: '장례', value: 'Funeral' }
-      ]
+      eventAdminCount: 1
     }
   },
   methods: {
@@ -209,3 +185,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .bg-unset {
+    background-color: #FCF3F7;
+  }
+</style>
