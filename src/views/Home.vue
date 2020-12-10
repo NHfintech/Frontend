@@ -4,6 +4,7 @@
       <b-navbar-nav>
         <b-nav-item href="/">이벤트</b-nav-item>
         <b-nav-item href="/breakdown">송금 내역</b-nav-item>
+        <b-nav-item href="/event/participated">참여한 이벤트</b-nav-item>
       </b-navbar-nav>
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
