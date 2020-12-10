@@ -5,6 +5,7 @@ import Signup from '@/views/Signup'
 import Login from '@/views/Login'
 import Main from '@/views/Main'
 import Home from '@/views/Home'
+import EventParticipated from '@/views/EventParticipated'
 import Event from '@/views/Event'
 import EventCreate from '@/views/EventCreate'
 import EventEdit from '@/views/EventEdit'
@@ -36,6 +37,10 @@ const router = new Router({
         {
           path: '/breakdown',
           component: MyBreakDown
+        },
+        {
+          path: '/event/participated',
+          component: EventParticipated
         }
       ]
     },

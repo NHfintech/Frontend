@@ -20,9 +20,9 @@
       </div>
       <div class="col-md-6 col-xl-3 text-right ">
         <div v-if="userType === 'master'">
-          <b-button v-b-modal.modal-prevent-closing>수기로 추가하기</b-button>
+          <b-button v-b-modal.modal-prevent-closing-2>수기로 추가하기</b-button>
           <b-modal
-            id="modal-prevent-closing"
+            id="modal-prevent-closing-2"
             ref="modal"
             title="Submit Your Name"
             @show="resetModal"
@@ -103,6 +103,7 @@ export default {
       }
       this.directInputAmount = ''
       this.directInputSenderName = ''
+      this.$refs.modal.hide()
       this.fetchBreakdownList()
     },
     async onClickDeleteBreakdownEvent (breakdownId) {
