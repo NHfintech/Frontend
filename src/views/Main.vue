@@ -81,7 +81,6 @@ import API from '../components/API'
 import StatsCard from '@/components/Cards/StatsCard.vue'
 
 export default {
-  name: 'HelloWorld',
   components: {
     StatsCard
   },

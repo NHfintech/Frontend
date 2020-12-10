@@ -10,7 +10,7 @@
           <div>
             <div>
               <break-card
-              :name="stats.name"
+              :name="stats.title"
               :minusmoney="stats.money"
               :date="stats.transfer_datetime"
             />

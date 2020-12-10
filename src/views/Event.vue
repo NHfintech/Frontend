@@ -237,7 +237,7 @@ export default {
     async receiveDepositEvent () {
       const data = {
         event_hash: this.eventHash,
-        bcnd: this.bankCode,
+        bncd: this.bankCode,
         acno: this.accountNumber
       }
       const res = await API.finReceiveAPI(
