@@ -72,10 +72,10 @@
             </template>
             <div >
               <div class="rounded shadow bg-white">
-                <b-dropdown-item v-on:click="onClickEditEvent">edit</b-dropdown-item>
+                <b-dropdown-item v-if="isActivated" v-on:click="onClickEditEvent">edit</b-dropdown-item>
                 <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
-                <b-dropdown-item v-on:click="onClickCloseEvent">close</b-dropdown-item>
-                <b-dropdown-item v-b-modal.modal-prevent-closing>receive</b-dropdown-item>
+                <b-dropdown-item v-if="isActivated" v-on:click="onClickCloseEvent">close</b-dropdown-item>
+                <b-dropdown-item v-if="isReceived === false" v-b-modal.modal-prevent-closing>receive</b-dropdown-item>
                 <b-modal
                   id="modal-prevent-closing"
                   ref="modal"
@@ -165,7 +165,8 @@ export default {
       userType: '',
       bankCode: '',
       accountNumber: '',
-      nameState: ''
+      nameState: '',
+      isReceived: ''
     }
   },
   methods: {
@@ -186,17 +187,30 @@ export default {
       this.eventHash = data.event_hash
       this.userId = data.user_id
       this.userType = data.userType
+      this.isReceived = data.is_received
     },
     onClickEditEvent () {
       this.$router.replace({ path: '/event/edit/' + this.$route.params.id }).catch(() => {})
     },
     async onClickDestroyEvent () {
+      if (this.isActivated) {
+        alert('종료된 이벤트만 삭제할 수 있습니다.')
+        return
+      }
+      if (confirm('이벤트 삭제 시 모든 이체 내역을 조회할 수 없게 됩니다. 정말 삭제하시겠습니까?') === false) {
+        return
+      }
       await API.destroyEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
-      this.$router.replace({ path: '/' }).catch(() => {})
+        this.$router.replace({ path: '/' }).catch(() => {})
     },
     async onClickCloseEvent () {
-      await API.closeEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
-      this.$router.replace({ path: '/' }).catch(() => {})
+      if (confirm('이벤트 종료 시 송금 링크가 비활성화 됩니다. 이벤트를 종료하시겠습니까?') === false) {
+        return
+      }
+      const res = await API.closeEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id)
+      if (res.data.result === errorcode.SUCCESS) {
+        this.isActivated = false
+      }
     },
     onClickBreakdownEvent () {
       this.$router.replace({ path: `/event/${this.$route.params.id}/breakdown` }).catch(() => {})
@@ -230,6 +244,10 @@ export default {
       })
     },
     async receiveDepositEvent () {
+      if (this.isActivated) {
+        alert('종료 이후에만 출금할 수 있습니다.')
+        return
+      }
       const data = {
         event_hash: this.eventHash,
         bncd: this.bankCode,
