@@ -259,6 +259,7 @@ export default {
       if (res.data.result !== errorcode.SUCCESS) {
         alert(res.data.detail)
       }
+      this.$refs['receive-deposit-modal'].hide()
     },
     getTransferUrl () {
       return `${this.$env.hostUrl}/fin/transfer/${this.eventHash}`
