@@ -134,7 +134,7 @@ export default {
           this.$http.defaults.headers.common.Authorization = token
           this.$store.commit('saveUser', user)
           this.$store.commit('saveToken', token)
-          window.Android.getUserId(this.$store.state.user.id)
+          // window.Android.getUserId(this.$store.state.user.id)
           const next = this.$route.query.next === undefined ? '' : '/?next=' + this.$route.query.next
           if (fromSignUp) {
             this.$router.push('/fin/account' + next)

@@ -23,7 +23,6 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
   methods: {
     logout () {
       this.$store.commit('removeUser')
