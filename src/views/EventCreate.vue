@@ -24,6 +24,7 @@
             v-model="eventDatetime"
             mode="dateTime"
             class="form-control "
+            :minute-increment="5"
           >
             <template v-slot="{ inputValue, inputEvents }">
               <input
@@ -32,6 +33,7 @@
                 id="eventDatetime"
                 :value="inputValue"
                 v-on="inputEvents"
+                autocomplete="off"
               />
             </template>
           </vc-date-picker>
@@ -44,9 +46,11 @@
             <b-icon icon="sticky-fill"></b-icon>
           </b-input-group-prepend>
           <b-form-input
+            required
             v-model="title"
             type="text"
             placeholder="타이틀"
+            :state="title?true:null"
           ></b-form-input>
         </b-input-group>
       </div>
@@ -55,7 +59,7 @@
           <b-input-group-prepend is-text>
             <b-icon icon="file-earmark-text-fill"></b-icon>
           </b-input-group-prepend>
-          <b-form-textarea v-model="body" placeholder="내용"></b-form-textarea>
+          <b-form-textarea v-model="body" placeholder="내용" :state="body?true:null"></b-form-textarea>
         </b-input-group>
       </div>
       <div class="col-12 py-1">
@@ -68,16 +72,20 @@
             type="text"
             ref="loc"
             placeholder="위치"
+            v-b-modal.modal-prevent-closing
+            readOnly
           ></b-form-input>
-          <b-button v-b-modal.modal-prevent-closing>검색</b-button>
           <b-modal
+            hide-footer
             id="modal-prevent-closing"
             ref="modal"
-            @show="resetModal"
-            @hidden="resetModal"
-            @ok="handleOk"
           >
-            <vue-daum-postcode/>
+            <vue-daum-postcode
+            @complete=" result = $event;
+            result.userSelectedType=='J' ? location=result.jibunAddress : location=result.roadAddress;
+            $refs['modal'].hide()
+            "
+            />
           </b-modal>
 
         </b-input-group>
@@ -85,12 +93,24 @@
       <div class="col-12 py-1">
         <b-input-group class="mb-2">
           <b-input-group-prepend is-text>
-            <b-icon icon="geo-alt-fill"></b-icon>
+            <b-icon icon="geo-fill"></b-icon>
+          </b-input-group-prepend>
+          <b-form-input
+            v-model="locationDetail"
+            type="text"
+            placeholder="상세위치"
+          ></b-form-input>
+        </b-input-group>
+      </div>
+      <div class="col-12 py-1">
+        <b-input-group class="mb-2">
+          <b-input-group-prepend is-text>
+            <b-icon icon="link45deg"></b-icon>
           </b-input-group-prepend>
           <b-form-input
             v-model="invitationUrl"
             type="text"
-            placeholder="URL"
+            placeholder="외부링크"
           ></b-form-input>
         </b-input-group>
       </div>
@@ -165,7 +185,7 @@
             </b-input-group>
             <ul
               id="my-custom-tags-list"
-              class="list-unstyled d-inline-flex flex-wrap mb-0"
+              class="list-unstyled flex-wrap mb-0"
               aria-live="polite"
               aria-atomic="false"
               aria-relevant="additions removals"
@@ -176,13 +196,14 @@
                 :id="`my-custom-tags-tag_${tag.replace(/\s/g, '_')}_`"
                 tag="li"
                 class="mt-1 mr-1"
-                body-class="py-1 pr-2 text-nowrap pl-4"
+                body-class="py-1 pr-2 pl-4 text-nowrap"
               >
-                <strong>{{ tag }}</strong>
+                <strong class="col-8 text-overdot">{{ tag }}</strong>
                 <b-button
                   @click="removeTag(tag)"
                   variant="link"
                   size="sm"
+                  class="col-4"
                   :aria-controls="
                     `my-custom-tags-tag_${tag.replace(/\s/g, '_')}_`
                   "
@@ -213,11 +234,13 @@ export default {
       category: null,
       title: '',
       location: '',
+      locationDetail: '',
       body: '',
       eventAdmin: [],
       invitationUrl: '',
       eventDatetime: '시간',
       eventAdminCount: 1,
+      result: { jibunAddress: '', roadAddress: '', userSelectedType: '' },
       options: [
         { text: '종류', value: null, disabled: true },
         { text: '결혼', value: 'wedding' },
@@ -235,12 +258,18 @@ export default {
       const commonData = {
         category: this.category,
         title: this.title,
-        location: this.location,
+        location: this.location + this.locationDetail,
         body: this.body,
         invitationUrl: this.invitationUrl,
         eventDatetime: moment(this.eventDatetime).format(
           'YYYY-MM-DD HH:mm:ss'
         )
+      }
+      for (const i in commonData) {
+        if (commonData[i] === '') {
+          alert(i + '가 빈칸입니다.')
+          return false
+        }
       }
       let data = ''
       if (this.category === 'wedding') {
@@ -289,5 +318,14 @@ export default {
 <style scoped>
   .bg-unset {
     background-color: #FCF3F7;
+  }
+  .text-overdot {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+  }
+  input[readonly]
+  {
+    background-color:#fff;
   }
 </style>
