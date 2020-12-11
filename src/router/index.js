@@ -102,11 +102,7 @@ const router = new Router({
     },
     {
       path: '/fin/transfer/:hash',
-      component: FinTransfer,
-      meta: {
-        requiresAuth: true,
-        requiresFinAccount: true
-      }
+      component: FinTransfer
     },
     {
       path: '/invite/:hash',
