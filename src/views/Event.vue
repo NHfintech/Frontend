@@ -39,6 +39,17 @@
               <h5 class="ml-2">{{ eventDatetime }}</h5>
             </div>
           </div>
+          <div
+            class="card font-11 mt-1"
+            style="display: flex; align-items: baseline;"
+          >
+            <div class="col-12 row no-gutters pt-3">
+              <i class="font-13 ti-calendar"></i>
+              <router-link :to="finTransferURL">
+                <h5 class="ml-2">송금 페이지 바로가기</h5>
+              </router-link>
+            </div>
+          </div>
         </b-tab>
         <b-tab title="청첩장">
           <div style="height:100vh">
@@ -54,7 +65,7 @@
             </iframe>
           </div>
         </b-tab>
-        <b-tab title="QR">
+        <b-tab v-if="userType==='master' || userType==='admin'" title="QR">
           <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="getTransferUrl()" />
           <div class="row text-center no-gutters col-12">
             <div class="col-10 font-na font-20">카카오톡으로 이벤트 공유하기</div>
@@ -164,7 +175,8 @@ export default {
       bankCode: '',
       accountNumber: '',
       nameState: '',
-      isReceived: ''
+      isReceived: '',
+      finTransferURL: '',
     }
   },
   methods: {
@@ -186,6 +198,7 @@ export default {
       this.userId = data.user_id
       this.userType = data.userType
       this.isReceived = data.is_received
+      this.finTransferURL = `/fin/transfer/${this.eventHash}`
     },
     onClickEditEvent () {
       this.$router.replace({ path: '/event/edit/' + this.$route.params.id }).catch(() => {})
