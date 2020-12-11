@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3><a href="callMyApp://search">앱실행 </a></h3>
     <!--Stats cards-->
     <div class="container-fluid">
       <div class="row">
@@ -64,10 +63,11 @@
             </stats-card>
           </div>
         </div>
-        <div class="col-md-6 col-xl-3 text-right ">
+        <div class=" no-gutters row col-md-6 mt-2 col-xl-3 justify-content-end " style="align-items: flex-end;">
+          <div class="h4" v-if="eventList.length===0">  등록한 이벤트가 없습니다.</div>
           <router-link class="pb-4 pr-4 " :to="{ path: createEventURL }">
             <b-iconstack font-scale="2">
-              <b-icon variant="success" icon="plus-circle-fill"></b-icon>
+              <b-icon variant="pink" icon="plus-circle-fill"></b-icon>
             </b-iconstack>
           </router-link>
         </div>
