@@ -1,16 +1,39 @@
 <template>
   <div>
     <div class="container-fluid">
+      <div class="text-right justify-content-between mt-1">
+        <div class="row no-gutters">
+          <b-input-group class="col-10">
+            <b-form-input class="font-15 py-0 h-auto " v-model="keyword" :class="{'flex-grow-0 p-0 border-0':search}"></b-form-input>
+            <template #append>
+              <button class="btn p-1 mx-1 bg-white border-0 text-dark"><b-icon icon="search" aria-hidden="true" @click="search=!search"></b-icon></button>
+            </template>
+          </b-input-group>
+          <b-dropdown size="lg" class="btn col-2 p-0 bg-white border-0 text-dark" variant="link" toggle-class="text-decoration-none p-0" no-caret>
+            <template #button-content >
+              <button class="border-0 p-0 bg-white" ><b-icon icon="sort-down" aria-hidden="true"></b-icon></button>
+            </template>
+            <b-dropdown-item disabled>오름차순 정렬</b-dropdown-item>
+            <b-dropdown-item @click="sortkey='timeASC'" >시간</b-dropdown-item>
+            <b-dropdown-item @click="sortkey='nameASC'" >이름</b-dropdown-item>
+            <b-dropdown-divider></b-dropdown-divider>
+            <b-dropdown-item disabled>내림차순 정렬</b-dropdown-item>
+            <b-dropdown-item @click="sortkey='timeDESC'" >시간</b-dropdown-item>
+            <b-dropdown-item @click="sortkey='nameDESC'" >이름</b-dropdown-item>
+          </b-dropdown>
+
+        </div>
+      </div>
       <div class="card mt-1 border-top">
         <div
           class="col-md-6 col-xl-3"
-          v-for="stats in breakdownList"
+          v-for="stats in searchList"
           :key="stats.id"
         >
           <div>
             <div>
               <break-card
-              :name="stats.title"
+              :name="stats.name"
               :minusmoney="stats.money"
               :date="stats.transfer_datetime"
             />
@@ -31,26 +54,22 @@
             >
               <form ref="form" @submit.stop.prevent="handleSubmit">
                 <b-form-group
-                  :state="nameState"
                   label="이름"
                   label-for="name-input"
                 >
                   <b-form-input
                     id="name-input"
                     v-model="directInputSenderName"
-                    :state="nameState"
                     required
                   ></b-form-input>
                 </b-form-group>
                 <b-form-group
-                  :state="nameState"
                   label="금액"
                   label-for="name-input"
                 >
                   <b-form-input
                     id="name-input"
                     v-model="directInputAmount"
-                    :state="nameState"
                     required
                   ></b-form-input>
                 </b-form-group>
@@ -74,18 +93,26 @@ export default {
       nameState: null,
       submittedNames: [],
       breakdownList: [
-        { name: '이제찬', money: 100000, transfer_datetime: '2014-02-01' },
-        { name: '이제찬', money: 100000, transfer_datetime: '2014-02-01' },
-        { name: '이제찬', money: 100000, transfer_datetime: '2014-02-01' }
+        { name: '김제찬', money: 100, transfer_datetime: '2014-02-01' },
+        { name: '현제찬', money: 2000, transfer_datetime: '2014-02-02' },
+        { name: '이제찬', money: 300000, transfer_datetime: '2014-02-03' }
       ],
       directInputAmount: '',
-      directInputSenderName: ''
+      directInputSenderName: '',
+      search: true,
+      keyword: '',
+      searchList: [],
+      sortkey: ''
     }
   },
   methods: {
+    // error 남 테스트용
     async fetchBreakdownList () {
       const res = await API.getMyBreakdownAPI(this.$http, this.$env.apiUrl)
-      if (res.data.data.length) this.breakdownList = res.data.data
+      if (res.data.data.length) {
+        // this.breakdownList = res.data.data
+      }
+      this.searchList = this.breakdownList
     },
     async onClickDirectInputEvent (data) {
       const res = await API.createBreakdownAPI(
@@ -147,6 +174,45 @@ export default {
   },
   mounted () {
     this.fetchBreakdownList()
+  },
+  watch: {
+    keyword: function (val) {
+      if (val.trim() === '') {
+        this.searchList = this.breakdownList
+      } else {
+        this.searchList = this.breakdownList.filter((b) => {
+          return b.name.includes(this.keyword)
+        })
+      }
+    },
+    sortkey: function (val) {
+      switch (val) {
+        case 'timeASC':
+          this.searchList = this.breakdownList.sort((a, b) => {
+            return a.transfer_datetime < b.transfer_datetime ? -1 : a.transfer_datetime > b.transfer_datetime ? 1 : 0
+          })
+          break
+        case 'timeDESC':
+          this.searchList = this.breakdownList.sort((b, a) => {
+            return a.transfer_datetime < b.transfer_datetime ? -1 : a.transfer_datetime > b.transfer_datetime ? 1 : 0
+          })
+          break
+        case 'nameASC':
+          this.searchList = this.breakdownList.sort((a, b) => {
+            return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+          })
+
+          break
+        case 'nameDESC':
+          this.searchList = this.breakdownList.sort((b, a) => {
+            return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+          })
+          break
+
+        default:
+          break
+      }
+    }
   }
 }
 </script>
