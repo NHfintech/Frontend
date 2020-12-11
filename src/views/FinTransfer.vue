@@ -41,7 +41,17 @@ export default {
       }
       alert('success')
       this.$router.replace({ path: '/breakdown' }).catch(() => {})
+    },
+    checkUser () {
+      if (this.$store.state.token === undefined) {
+        this.$router.replace({ path: '/login/?next=' + encodeURIComponent(this.$route.fullPath) }).catch(() => {})
+      } else if (this.$store.state.user.fin_account === null) {
+        this.$router.replace({ path: '/fin/account/?next=' + encodeURIComponent(this.$route.fullPath) }).catch(() => {})
+      }
     }
+  },
+  mounted () {
+    this.checkUser()
   }
 }
 </script>
