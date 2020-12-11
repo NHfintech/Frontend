@@ -21,6 +21,7 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 #app {
   /* min-height: 100%; */
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -44,11 +45,29 @@ export default {
 .font-20{
   font-size:20px
 }
+.font-30{
+  font-size:30px
+}
+.font-60{
+  font-size:60px
+}
 .font-do{
   font-family: 'Nanum Gothic Coding', monospace;
 }
 .font-na{
   font-family: 'Do Hyeon', sans-serif;
+}
+.font-ye{
+  font-family: 'Yeon Sung', cursive;
+}
+.text-pink{
+  color: rgb(222, 144, 144);
+}
+.text-main-pink{
+  color: rgb(253, 234, 220);
+}
+.bg-main-pink{
+  background-color: rgb(253, 234, 220);
 }
 .font-spacing-1{
   letter-spacing: -1px;
@@ -67,6 +86,16 @@ export default {
 }
 .bg-gray{
   background-color: rgba(30,30,30, 0.03 ) !important
+}
+.border-pink{
+  border-color: rgb(222, 144, 144) !important
+}
+.btn-pink{
+  background-color: rgb(222, 144, 144) !important;
+  border-color: rgb(222, 144, 144);
+  color: #FFFFFF;
+  opacity: 1;
+  filter: alpha(opacity=100);
 }
 .content{
   min-height:100vh !important

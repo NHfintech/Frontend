@@ -13,7 +13,7 @@
     background-color: $transparent-bg;
   }
 
-  @include btn-styles($default-color, $default-states-color);
+  // @include btn-styles($default-color, $default-states-color);
   @include transition($fast-transition-time, linear);
 
   &:hover,
