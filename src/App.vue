@@ -67,7 +67,7 @@ export default {
   color: rgb(253, 234, 220);
 }
 .bg-main-pink{
-  background-color: rgb(253, 234, 220);
+  background-color: rgb(253, 234, 220) !important;
 }
 .font-spacing-1{
   letter-spacing: -1px;
