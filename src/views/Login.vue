@@ -148,6 +148,10 @@ export default {
     },
 
     signup: function () {
+      if (this.userPassword !== this.confirmUserPassword) {
+        alert('비밀번호를 확인해 주십시오.')
+        return
+      }
       const data = {
         username: this.username,
         password: this.userPassword,
@@ -155,8 +159,15 @@ export default {
         phone_number: this.phoneNumber.replaceAll('-', '')
       }
       API.signUpAPI(this.$http, this.$env.apiUrl, data).then(res => {
-        alert(res.data.detail)
-        if (res.data.result === 0) this.login(1)
+        if (res.data.result === 0) {
+          this.login(1)
+        } else if (res.data.data === 'users.username must be unique') {
+          alert('아이디가 중복됩니다.')
+        } else if (res.data.data === 'users.phone_number must be unique') {
+          alert('가입된 휴대폰 번호입니다.')
+        } else {
+          alert(res.data.detail)
+        }
       })
     }
   }
