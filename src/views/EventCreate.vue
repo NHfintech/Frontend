@@ -255,21 +255,24 @@ export default {
   },
   methods: {
     async onClickCreateEvent () {
-      const commonData = {
+      const requiredData = {
         category: this.category,
         title: this.title,
-        location: this.location + this.locationDetail,
+        location: this.location,
         body: this.body,
-        invitationUrl: this.invitationUrl,
         eventDatetime: moment(this.eventDatetime).format(
           'YYYY-MM-DD HH:mm:ss'
         )
       }
-      for (const i in commonData) {
-        if (commonData[i] === '') {
+      for (const i in requiredData) {
+        if (requiredData[i] === '') {
           alert(i + '가 빈칸입니다.')
           return false
         }
+      }
+      const unrequiredData = {
+        locationDetail: this.locationDetail,
+        invitationUrl: this.invitationUrl
       }
       let data = ''
       if (this.category === 'wedding') {
@@ -285,7 +288,7 @@ export default {
           eventAdmin: this.convertEventAdmin()
         }
       }
-      data = { ...commonData, ...data }
+      data = { ...requiredData, ...unrequiredData, ...data }
       const res = await API.createEventAPI(
         this.$http,
         this.$env.apiUrl,
