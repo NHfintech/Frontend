@@ -13,6 +13,9 @@ export default new Vuex.Store({
     saveUser (state, user) {
       state.user = user
     },
+    saveFinAccount (state, finAccount) {
+      state.user.fin_account = finAccount
+    },
     saveToken (state, token) {
       state.token = token
     },
