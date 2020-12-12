@@ -7,7 +7,7 @@
       <b-tabs
         fill
         pills
-        active-nav-item-class="bg-custom-pink text-dark font-weight-bold"
+        :active-nav-item-class="{'bg-custom-pink' : category=='marriage','bg-custom-gray' : category=='funeral','text-dark font-weight-bold':true}"
         class="font-do no-gutters"
         content-class="mt-3"
       >
@@ -26,8 +26,7 @@
             style="display: flex; align-items: baseline;"
           >
             <div class="col-12 row no-gutters pt-3">
-              <i class="font-13 ti-location-pin"></i>
-              <h5 class="ml-2">{{ location }}</h5>
+              <h5><i class="font-13 mr-1 ti-location-pin"></i>{{ location }}</h5>
             </div>
           </div>
           <div
@@ -44,14 +43,14 @@
             style="display: flex; align-items: baseline;"
           >
             <div class="col-12 row no-gutters pt-3">
-              <i class="font-13 ti-calendar"></i>
+              <i class="font-13 ti-link"></i>
               <router-link :to="finTransferURL">
                 <h5 class="ml-2">송금 페이지 바로가기</h5>
               </router-link>
             </div>
           </div>
         </b-tab>
-        <b-tab title="청첩장">
+        <b-tab title="링크">
           <div style="height:100vh">
             <iframe
               :src="invitation_url"
@@ -66,7 +65,7 @@
           </div>
         </b-tab>
         <b-tab v-if="userType==='master' || userType==='admin'" title="QR">
-          <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="getTransferUrl()" />
+          <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#f8f8f8' }" v-bind:value="getTransferUrl()" />
           <div class="row text-center no-gutters col-12">
             <div class="col-10 font-na font-20">카카오톡으로 이벤트 공유하기</div>
             <img v-on:click="onClickShareEvent" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
@@ -77,16 +76,16 @@
           :user-type="userType"/>
         </b-tab>
         <template v-if="userType==='master'" #tabs-end>
-          <b-nav-item-dropdown no-caret variant="light" right style="background-color: #FCF3F7 !important; color: black !important;">
+          <b-nav-item-dropdown no-caret variant="light" right style="background-color: #f8f8f8 !important; color: black !important;">
             <template #text>
               <b-icon style="color: gray" icon="three-dots-vertical"></b-icon>
             </template>
             <div >
               <div class="rounded shadow bg-white">
-                <b-dropdown-item v-if="isActivated" v-on:click="onClickEditEvent">edit</b-dropdown-item>
-                <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
-                <b-dropdown-item v-if="isActivated" v-on:click="onClickCloseEvent">close</b-dropdown-item>
-                <b-dropdown-item v-if="isReceived === false" @click="clickModal">receive</b-dropdown-item>
+                <b-dropdown-item v-if="isActivated" v-on:click="onClickEditEvent">수정하기</b-dropdown-item>
+                <b-dropdown-item v-on:click="onClickDestroyEvent">삭제하기</b-dropdown-item>
+                <b-dropdown-item v-if="isActivated" v-on:click="onClickCloseEvent">종료하기</b-dropdown-item>
+                <b-dropdown-item v-if="isReceived === false" @click="clickModal">계좌로 입금받기</b-dropdown-item>
                 <b-modal
                   ref="receive-deposit-modal"
                   @hidden="resetModal"

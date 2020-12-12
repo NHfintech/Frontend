@@ -115,49 +115,86 @@
         </b-input-group>
       </div>
       <div v-if="category==='wedding'">
+      <div>
+        <div class="hr-sect font-20 font-do font-weight-bolder">전화번호</div>
+      </div>
         <div class="col-12 py-1">
-          <b-input-group class="mb-2">
+          <b-input-group class="mb-2" v-if="self!=='groom'&&self!=='bride'">
             <b-input-group-prepend is-text>
-              <b-icon icon="geo-alt-fill"></b-icon>
+              <b-icon icon="flower1"></b-icon>
+            </b-input-group-prepend>
+            <b-form-input
+              value="나는 누구인가요?"
+              type="text"
+              class="h-auto"
+              disabled
+            ></b-form-input>
+            <b-form-radio-group
+              class="p-0 border-1 border-info btn-pink"
+              v-model="self"
+              :options="optionsSelf"
+              size="sm"
+              button-variant='outline-dark'
+              name="buttons-1"
+              buttons
+            ></b-form-radio-group>
+            </b-input-group>
+          <b-input-group class="mb-2" v-else>
+            <b-input-group-prepend is-text>
+              <b-icon icon="flower1"></b-icon>
             </b-input-group-prepend>
             <b-form-input
               v-model="partner"
               type="text"
-              placeholder="신부/신랑"
+              class="h-auto"
+              :placeholder="self=='groom'?'신부 번호' :'신랑 번호'"
             ></b-form-input>
+            <b-input-group-append>
+            <b-button variant="pink" @click="self=''" ><b-icon scale='1.6' icon="arrow-clockwise"></b-icon></b-button>
+            </b-input-group-append>
           </b-input-group>
         </div>
-        <div class="col-12 py-1">
-          <b-input-group class="mb-2">
-            <b-form-input
-              v-model="myFather"
-              type="text"
-              placeholder="내 아빠"
-            ></b-form-input>
-          </b-input-group>
-          <b-input-group class="mb-2">
-            <b-form-input
-              v-model="myMother"
-              type="text"
-              placeholder="내 엄마"
-            ></b-form-input>
-          </b-input-group>
-        </div>
-        <div class="col-12 py-1">
-          <b-input-group class="mb-2">
-            <b-form-input
-              v-model="urFather"
-              type="text"
-              placeholder="니 아빠"
-            ></b-form-input>
-          </b-input-group>
-          <b-input-group class="mb-2">
-            <b-form-input
-              v-model="urMother"
-              type="text"
-              placeholder="니 엄마"
-            ></b-form-input>
-          </b-input-group>
+        <div v-if="self=='groom'||self=='bride'">
+          <div class="col-12 py-1">
+            <b-input-group class="mb-2">
+              <b-input-group-prepend v-if="self=='groom'" is-text>
+                신랑측
+              </b-input-group-prepend>
+              <b-input-group-prepend v-else is-text>
+                신부측
+              </b-input-group-prepend>
+              <b-form-input
+                v-model="myFather"
+                type="text"
+                placeholder="부"
+              ></b-form-input>
+              <b-form-input
+                v-model="myMother"
+                type="text"
+                placeholder="모"
+              ></b-form-input>
+            </b-input-group>
+          </div>
+          <div class="col-12 py-1">
+            <b-input-group class="mb-2">
+              <b-input-group-prepend v-if="self=='bride'" is-text>
+                신랑측
+              </b-input-group-prepend>
+              <b-input-group-prepend v-else is-text>
+                신부측
+              </b-input-group-prepend>
+              <b-form-input
+                v-model="urFather"
+                type="text"
+                placeholder="부"
+              ></b-form-input>
+              <b-form-input
+                v-model="urMother"
+                type="text"
+                placeholder="모"
+              ></b-form-input>
+            </b-input-group>
+          </div>
         </div>
       </div>
       <div v-if="category==='funeral'">
@@ -215,7 +252,7 @@
         </b-form-tags>
       </div>
     </div>
-    <button class="btn btn-block col-11 ml-3" v-on:click="onClickCreateEvent">
+    <button class="btn btn-block col-11 ml-3 border-dark btn-pink" v-on:click="onClickCreateEvent">
       Create Event
     </button>
   </div>
@@ -232,6 +269,7 @@ export default {
   data () {
     return {
       category: null,
+      self: '',
       title: '',
       location: '',
       locationDetail: '',
@@ -246,6 +284,10 @@ export default {
         { text: '결혼', value: 'wedding' },
         { text: '장례', value: 'funeral' }
       ],
+      optionsSelf: [
+        { text: '신랑', value: 'groom' },
+        { text: '신부', value: 'bride' }
+      ],
       myMother: '',
       myFather: '',
       urMother: '',
@@ -258,7 +300,7 @@ export default {
       const commonData = {
         category: this.category,
         title: this.title,
-        location: this.location + this.locationDetail,
+        location: this.location + ' ' + this.locationDetail,
         body: this.body,
         invitationUrl: this.invitationUrl,
         eventDatetime: moment(this.eventDatetime).format(
@@ -327,5 +369,21 @@ export default {
   input[readonly]
   {
     background-color:#fff;
+  }
+  .hr-sect {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.35);
+    margin: 8px 0px;
+  }
+  .hr-sect::before,
+  .hr-sect::after {
+    content: "";
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.35);
+    height: 1px;
+    line-height: 0px;
+    margin: 0px 16px;
   }
 </style>
