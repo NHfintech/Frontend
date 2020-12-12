@@ -7,7 +7,7 @@
       <b-tabs
         fill
         pills
-        :active-nav-item-class="{'bg-custom-pink' : category=='marriage','bg-custom-gray' : category=='funeral','text-dark font-weight-bold':true}"
+        :active-nav-item-class="{'bg-custom-pink' : category=='wedding','bg-custom-gray' : category=='funeral','text-dark font-weight-bold':true}"
         class="font-do no-gutters"
         content-class="mt-3"
       >
@@ -66,10 +66,32 @@
         </b-tab>
         <b-tab v-if="userType==='master' || userType==='admin'" title="QR">
           <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#f8f8f8' }" v-bind:value="getTransferUrl()" />
-          <div class="row text-center no-gutters col-12">
+          <div class="row text-center no-gutters col-12" v-b-modal.modal-message-closing >
             <div class="col-10 font-na font-20">카카오톡으로 이벤트 공유하기</div>
-            <img v-on:click="onClickShareEvent" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
+            <img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
           </div>
+          <b-modal
+            id="modal-message-closing"
+            ref="modal"
+            title="함께 전송할 메세지를 입력해주세요"
+            @ok="onClickShareEvent"
+          >
+            <form ref="form" @submit.stop.prevent="handleSubmit">
+              <b-form-group
+                :state="message.length>3?true:null"
+                label="문자메세지"
+                label-for="message-input"
+                invalid-feedback="message is required"
+              >
+                <b-form-textarea
+                  id="message-input"
+                  v-model="message"
+                  :state="message.length>3?true:null"
+                  required
+                ></b-form-textarea>
+              </b-form-group>
+            </form>
+          </b-modal>
         </b-tab>
         <b-tab title="내역" v-if="userType==='master' || userType==='admin'" lazy>
           <event-breakdown
@@ -177,6 +199,7 @@ export default {
       nameState: '',
       isReceived: '',
       finTransferURL: '',
+      message: ''
     }
   },
   methods: {
@@ -187,6 +210,7 @@ export default {
         return
       }
       const data = res.data.data
+      console.log(data)
       this.category = data.category
       this.title = data.title
       this.body = data.body
@@ -199,6 +223,7 @@ export default {
       this.userId = data.user_id
       this.userType = data.userType
       this.isReceived = data.is_received
+      this.message = data.message
       this.finTransferURL = `/fin/transfer/${this.eventHash}`
     },
     onClickEditEvent () {
@@ -239,8 +264,8 @@ export default {
       Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
-          title: '딸기 희승 케익',
-          description: '#결혼식 #장례식 #경조사 #축의금 #조의금 #부조금',
+          title: this.title+" 에 초대합니다.",
+          description: this.message,
           imageUrl:
             'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
           link: {
