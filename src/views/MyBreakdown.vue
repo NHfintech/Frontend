@@ -92,11 +92,7 @@ export default {
       name: '',
       nameState: null,
       submittedNames: [],
-      breakdownList: [
-        { name: '김제찬', money: 100, transfer_datetime: '2014-02-01' },
-        { name: '현제찬', money: 2000, transfer_datetime: '2014-02-02' },
-        { name: '이제찬', money: 300000, transfer_datetime: '2014-02-03' }
-      ],
+      breakdownList: [],
       directInputAmount: '',
       directInputSenderName: '',
       search: true,
