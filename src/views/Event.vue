@@ -26,7 +26,7 @@
             style="display: flex; align-items: baseline;"
           >
             <div class="col-12 row no-gutters pt-3">
-              <h5><i class="font-13 mr-1 ti-location-pin"></i>{{ location }}</h5>
+              <h5><i class="font-13 mr-1 ti-location-pin"></i>{{ location + ' ' + locationDetail }}</h5>
             </div>
           </div>
           <div
@@ -53,7 +53,7 @@
         <b-tab title="링크">
           <div style="height:100vh">
             <iframe
-              :src="invitation_url"
+              :src="invitationUrl"
               name="b"
               width="100%"
               height="100%"
@@ -164,9 +164,10 @@ export default {
       category: '',
       title: '',
       location: '',
+      locationDetail: '',
       body: '',
       eventDatetime: '',
-      invitation_url: '',
+      invitationUrl: '',
       isActivated: '',
       userId: '',
       eventHash: '',
@@ -190,7 +191,8 @@ export default {
       this.title = data.title
       this.body = data.body
       this.location = data.location
-      this.invitation_url = data.invitation_url
+      this.locationDetail = data.location_detail
+      this.invitationUrl = data.invitationUrl
       this.eventDatetime = moment(data.event_datetime).format('YYYY-MM-DD HH:mm:ss')
       this.isActivated = data.is_activated
       this.eventHash = data.event_hash

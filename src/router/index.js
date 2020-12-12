@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import store from '@/store/index'
 import Router from 'vue-router'
-import Signup from '@/views/Signup'
 import Login from '@/views/Login'
 import Main from '@/views/Main'
 import Home from '@/views/Home'
@@ -51,10 +50,6 @@ const router = new Router({
     {
       path: '/404',
       component: PageNotFound
-    },
-    {
-      path: '/signup',
-      component: Signup
     },
     {
       path: '/login',

@@ -90,8 +90,8 @@ export default {
         acno: this.accountNumber
       }
       // 현재는 농협만 지원
-      if (this.bankCode !== '011') {
-        alert('현재는 농협은행만 지원합니다.')
+      if (this.bankCode !== '011' && this.bankCode !== '012') {
+        alert('현재는 농협은행과 농협상호금융만 지원합니다.')
         return false
       }
       const res = await API.linkAccountAPI(
@@ -103,7 +103,7 @@ export default {
         alert(res.data.detail)
         return
       }
-      this.$store.state.user.fin_account = res.data.data.fin_account
+      this.$store.commit('saveFinAccount', res.data.data.fin_account)
       const next =
           this.$route.query.next === undefined ? '/' : this.$route.query.next
       this.$router.replace({ path: next }).catch(() => {})
