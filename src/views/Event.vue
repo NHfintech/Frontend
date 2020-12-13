@@ -49,6 +49,39 @@
               </router-link>
             </div>
           </div>
+          <div
+            v-if="userType==='master' || userType==='admin'" title="QR"
+            class="card font-11 mt-1"
+            style="display: flex; align-items: baseline;"
+            v-b-modal.modal-message-closing
+          >
+            <div class="col-12 row no-gutters pt-3">
+              <i class="font-13 ti-link"></i>
+                <h5 class="ml-2">카카오톡으로 이벤트 공유하기</h5>
+                <b-modal
+                id="modal-message-closing"
+                ref="modal"
+                title="함께 전송할 메세지를 입력해주세요"
+                @ok="onClickShareEvent"
+              >
+                <form ref="form" @submit.stop.prevent="handleSubmit">
+                  <b-form-group
+                    :state="message.length>3?true:null"
+                    label="문자메세지"
+                    label-for="message-input"
+                    invalid-feedback="message is required"
+                  >
+                    <b-form-textarea
+                      id="message-input"
+                      v-model="message"
+                      :state="message.length>3?true:null"
+                      required
+                    ></b-form-textarea>
+                  </b-form-group>
+                </form>
+              </b-modal>
+            </div>
+          </div>
         </b-tab>
         <b-tab title="링크">
           <div style="height:100vh">
@@ -66,32 +99,6 @@
         </b-tab>
         <b-tab v-if="userType==='master' || userType==='admin'" title="QR">
           <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#f8f8f8' }" v-bind:value="getTransferUrl()" />
-          <div class="row text-center no-gutters col-12" v-b-modal.modal-message-closing >
-            <div class="col-10 font-na font-20">카카오톡으로 이벤트 공유하기</div>
-            <img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
-          </div>
-          <b-modal
-            id="modal-message-closing"
-            ref="modal"
-            title="함께 전송할 메세지를 입력해주세요"
-            @ok="onClickShareEvent"
-          >
-            <form ref="form" @submit.stop.prevent="handleSubmit">
-              <b-form-group
-                :state="message.length>3?true:null"
-                label="문자메세지"
-                label-for="message-input"
-                invalid-feedback="message is required"
-              >
-                <b-form-textarea
-                  id="message-input"
-                  v-model="message"
-                  :state="message.length>3?true:null"
-                  required
-                ></b-form-textarea>
-              </b-form-group>
-            </form>
-          </b-modal>
         </b-tab>
         <b-tab title="내역" v-if="userType==='master' || userType==='admin'" lazy>
           <event-breakdown
@@ -168,7 +175,7 @@
   </div>
 </template>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<script>Kakao.init('1dff8603c23a3ef72dfbf7c9cc71b774')</script>
+<script>Kakao.init('1cea813161beb949ad235005f477e237')</script>
 <script>
 import API from '../components/API'
 import errorcode from '../components/errorcode.json'
@@ -210,12 +217,13 @@ export default {
         return
       }
       const data = res.data.data
+      console.log(data)
       this.category = data.category
       this.title = data.title
       this.body = data.body
       this.location = data.location
       this.locationDetail = data.location_detail
-      this.invitationUrl = data.invitation_url
+      this.invitationUrl = data.invitationUrl
       this.eventDatetime = moment(data.event_datetime).format('YYYY-MM-DD HH:mm:ss')
       this.isActivated = data.is_activated
       this.eventHash = data.event_hash
