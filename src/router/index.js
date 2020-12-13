@@ -22,7 +22,7 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '',
+      path: '/',
       component: Home,
       meta: {
         requiresAuth: true,
@@ -30,15 +30,15 @@ const router = new Router({
       },
       children: [
         {
-          path: '/',
+          path: '',
           component: Main
         },
         {
-          path: '/breakdown',
+          path: 'breakdown',
           component: MyBreakDown
         },
         {
-          path: '/event/participated',
+          path: 'event/participated',
           component: EventParticipated
         }
       ]
