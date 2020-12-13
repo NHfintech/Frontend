@@ -168,7 +168,7 @@
   </div>
 </template>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<script>Kakao.init('1cea813161beb949ad235005f477e237')</script>
+<script>Kakao.init('1dff8603c23a3ef72dfbf7c9cc71b774')</script>
 <script>
 import API from '../components/API'
 import errorcode from '../components/errorcode.json'
@@ -210,7 +210,6 @@ export default {
         return
       }
       const data = res.data.data
-      console.log(data)
       this.category = data.category
       this.title = data.title
       this.body = data.body
@@ -266,8 +265,7 @@ export default {
         content: {
           title: this.title+" 에 초대합니다.",
           description: this.message,
-          imageUrl:
-            'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+          imageUrl: '',
           link: {
             mobileWebUrl: webUrl,
             webUrl: webUrl
@@ -313,7 +311,6 @@ export default {
     },
     clickModal () {
       if (this.isActivated) {
-        console.log('hi')
         alert('종료 이후에만 출금할 수 있습니다.')
         return
       }
