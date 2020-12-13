@@ -215,7 +215,7 @@ export default {
       this.body = data.body
       this.location = data.location
       this.locationDetail = data.location_detail
-      this.invitationUrl = data.invitationUrl
+      this.invitationUrl = data.invitation_url
       this.eventDatetime = moment(data.event_datetime).format('YYYY-MM-DD HH:mm:ss')
       this.isActivated = data.is_activated
       this.eventHash = data.event_hash
