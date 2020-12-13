@@ -175,7 +175,7 @@
   </div>
 </template>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<script>Kakao.init('1cea813161beb949ad235005f477e237')</script>
+<script>Kakao.init('1dff8603c23a3ef72dfbf7c9cc71b774')</script>
 <script>
 import API from '../components/API'
 import errorcode from '../components/errorcode.json'
@@ -223,7 +223,7 @@ export default {
       this.body = data.body
       this.location = data.location
       this.locationDetail = data.location_detail
-      this.invitationUrl = data.invitationUrl
+      this.invitationUrl = data.invitation_url
       this.eventDatetime = moment(data.event_datetime).format('YYYY-MM-DD HH:mm:ss')
       this.isActivated = data.is_activated
       this.eventHash = data.event_hash
@@ -303,6 +303,8 @@ export default {
       )
       if (res.data.result !== errorcode.SUCCESS) {
         alert(res.data.detail)
+      } else {
+        alert('이체를 성공적으로 완료하였습니다.');
       }
       this.$refs['receive-deposit-modal'].hide()
     },
