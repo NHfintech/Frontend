@@ -22,7 +22,7 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '',
       component: Home,
       meta: {
         requiresAuth: true,
