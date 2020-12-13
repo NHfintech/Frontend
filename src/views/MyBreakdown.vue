@@ -33,7 +33,7 @@
           <div>
             <div>
               <break-card
-              :name="stats.name"
+              :name="stats.title"
               :minusmoney="stats.money"
               :date="stats.transfer_datetime"
             />
@@ -106,7 +106,7 @@ export default {
     async fetchBreakdownList () {
       const res = await API.getMyBreakdownAPI(this.$http, this.$env.apiUrl)
       if (res.data.data.length) {
-        // this.breakdownList = res.data.data
+        this.breakdownList = res.data.data
       }
       this.searchList = this.breakdownList
     },
@@ -158,8 +158,7 @@ export default {
       // Push the name to submitted names
       const data = {
         name: this.directInputSenderName,
-        money: this.directInputAmount,
-        eventId: 1
+        money: this.directInputAmount
       }
       this.onClickDirectInputEvent(data)
       // Hide the modal manually
@@ -195,13 +194,13 @@ export default {
           break
         case 'nameASC':
           this.searchList = this.breakdownList.sort((a, b) => {
-            return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+            return a.title < b.title ? -1 : a.title > b.title ? 1 : 0
           })
 
           break
         case 'nameDESC':
           this.searchList = this.breakdownList.sort((b, a) => {
-            return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+            return a.title < b.title ? -1 : a.title > b.title ? 1 : 0
           })
           break
 

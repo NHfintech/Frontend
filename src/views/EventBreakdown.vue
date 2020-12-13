@@ -25,32 +25,32 @@
             id="modal-prevent-closing-2"
             ref="modal"
             title="Submit Your Name"
-            @show="resetModal"
-            @hidden="resetModal"
-            @ok="handleOk"
+            @show="resetDirectInputModal"
+            @hidden="resetDirectInputModal"
+            @ok="handleDirectInputOk"
           >
-            <form ref="form" @submit.stop.prevent="handleSubmit">
+            <form ref="form" @submit.stop.prevent="handleDirectInputSubmit">
               <b-form-group
-                :state="nameState"
+                :state="nameState2"
                 label="이름"
                 label-for="name-input"
               >
                 <b-form-input
                   id="name-input"
                   v-model="directInputSenderName"
-                  :state="nameState"
+                  :state="nameState2"
                   required
                 ></b-form-input>
               </b-form-group>
               <b-form-group
-                :state="nameState"
+                :state="nameState2"
                 label="금액"
                 label-for="name-input"
               >
                 <b-form-input
                   id="name-input"
                   v-model="directInputAmount"
-                  :state="nameState"
+                  :state="nameState2"
                   required
                 ></b-form-input>
               </b-form-group>
@@ -75,7 +75,7 @@ export default {
   data () {
     return {
       name: '',
-      nameState: null,
+      nameState2: null,
       submittedNames: [],
       breakdownList: [],
       directInputAmount: '',
@@ -120,21 +120,21 @@ export default {
     },
     checkFormValidity () {
       const valid = this.$refs.form.checkValidity()
-      this.nameState = valid
+      this.nameState2 = valid
       return valid
     },
-    resetModal () {
+    resetDirectInputModal () {
       this.name = ''
       this.directInputSenderName = null
       this.directInputAmount = null
     },
-    handleOk (bvModalEvt) {
+    handleDirectInputOk (bvModalEvt) {
       // Prevent modal from closing
       bvModalEvt.preventDefault()
       // Trigger submit handler
-      this.handleSubmit()
+      this.handleDirectInputSubmit()
     },
-    handleSubmit () {
+    handleDirectInputSubmit () {
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return
