@@ -143,7 +143,7 @@
   border-left: 0 none;
 }
 
-.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+.form-control[disabled], fieldset[disabled] .form-control {
   background-color: $light-gray;
   cursor: not-allowed;
   @include placeholder($dark-gray, 1);

@@ -7,7 +7,7 @@
       <b-tabs
         fill
         pills
-        active-nav-item-class="bg-custom-pink text-dark font-weight-bold"
+        :active-nav-item-class="{'bg-custom-pink' : category=='wedding','bg-custom-gray' : category=='funeral','text-dark font-weight-bold':true}"
         class="font-do no-gutters"
         content-class="mt-3"
       >
@@ -26,8 +26,7 @@
             style="display: flex; align-items: baseline;"
           >
             <div class="col-12 row no-gutters pt-3">
-              <i class="font-13 ti-location-pin"></i>
-              <h5 class="ml-2">{{ location }}</h5>
+              <h5><i class="font-13 mr-1 ti-location-pin"></i>{{ location + ' ' + locationDetail }}</h5>
             </div>
           </div>
           <div
@@ -44,17 +43,17 @@
             style="display: flex; align-items: baseline;"
           >
             <div class="col-12 row no-gutters pt-3">
-              <i class="font-13 ti-calendar"></i>
+              <i class="font-13 ti-link"></i>
               <router-link :to="finTransferURL">
                 <h5 class="ml-2">송금 페이지 바로가기</h5>
               </router-link>
             </div>
           </div>
         </b-tab>
-        <b-tab title="청첩장">
+        <b-tab title="링크">
           <div style="height:100vh">
             <iframe
-              :src="invitation_url"
+              :src="invitationUrl"
               name="b"
               width="100%"
               height="100%"
@@ -66,27 +65,49 @@
           </div>
         </b-tab>
         <b-tab v-if="userType==='master' || userType==='admin'" title="QR">
-          <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#FCF3F7' }" v-bind:value="getTransferUrl()" />
-          <div class="row text-center no-gutters col-12">
+          <vue-qrcode class="col-12 my-5" color.light="#dddddd" :color="{  light: '#f8f8f8' }" v-bind:value="getTransferUrl()" />
+          <div class="row text-center no-gutters col-12" v-b-modal.modal-message-closing >
             <div class="col-10 font-na font-20">카카오톡으로 이벤트 공유하기</div>
-            <img v-on:click="onClickShareEvent" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
+            <img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png">
           </div>
+          <b-modal
+            id="modal-message-closing"
+            ref="modal"
+            title="함께 전송할 메세지를 입력해주세요"
+            @ok="onClickShareEvent"
+          >
+            <form ref="form" @submit.stop.prevent="handleSubmit">
+              <b-form-group
+                :state="message.length>3?true:null"
+                label="문자메세지"
+                label-for="message-input"
+                invalid-feedback="message is required"
+              >
+                <b-form-textarea
+                  id="message-input"
+                  v-model="message"
+                  :state="message.length>3?true:null"
+                  required
+                ></b-form-textarea>
+              </b-form-group>
+            </form>
+          </b-modal>
         </b-tab>
         <b-tab title="내역" v-if="userType==='master' || userType==='admin'" lazy>
           <event-breakdown
           :user-type="userType"/>
         </b-tab>
         <template v-if="userType==='master'" #tabs-end>
-          <b-nav-item-dropdown no-caret variant="light" right style="background-color: #FCF3F7 !important; color: black !important;">
+          <b-nav-item-dropdown no-caret variant="light" right style="background-color: #f8f8f8 !important; color: black !important;">
             <template #text>
               <b-icon style="color: gray" icon="three-dots-vertical"></b-icon>
             </template>
             <div >
               <div class="rounded shadow bg-white">
-                <b-dropdown-item v-if="isActivated" v-on:click="onClickEditEvent">edit</b-dropdown-item>
-                <b-dropdown-item v-on:click="onClickDestroyEvent">delete</b-dropdown-item>
-                <b-dropdown-item v-if="isActivated" v-on:click="onClickCloseEvent">close</b-dropdown-item>
-                <b-dropdown-item v-if="isReceived === false" @click="clickModal">receive</b-dropdown-item>
+                <b-dropdown-item v-if="isActivated" v-on:click="onClickEditEvent">수정하기</b-dropdown-item>
+                <b-dropdown-item v-on:click="onClickDestroyEvent">삭제하기</b-dropdown-item>
+                <b-dropdown-item v-if="isActivated" v-on:click="onClickCloseEvent">종료하기</b-dropdown-item>
+                <b-dropdown-item v-if="isReceived === false" @click="clickModal">계좌로 입금받기</b-dropdown-item>
                 <b-modal
                   ref="receive-deposit-modal"
                   @hidden="resetModal"
@@ -147,7 +168,7 @@
   </div>
 </template>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<script>Kakao.init('1cea813161beb949ad235005f477e237')</script>
+<script>Kakao.init('1dff8603c23a3ef72dfbf7c9cc71b774')</script>
 <script>
 import API from '../components/API'
 import errorcode from '../components/errorcode.json'
@@ -165,9 +186,10 @@ export default {
       category: '',
       title: '',
       location: '',
+      locationDetail: '',
       body: '',
       eventDatetime: '',
-      invitation_url: '',
+      invitationUrl: '',
       isActivated: '',
       userId: '',
       eventHash: '',
@@ -177,6 +199,7 @@ export default {
       nameState: '',
       isReceived: '',
       finTransferURL: '',
+      message: ''
     }
   },
   methods: {
@@ -191,13 +214,15 @@ export default {
       this.title = data.title
       this.body = data.body
       this.location = data.location
-      this.invitation_url = data.invitation_url
+      this.locationDetail = data.location_detail
+      this.invitationUrl = data.invitationUrl
       this.eventDatetime = moment(data.event_datetime).format('YYYY-MM-DD HH:mm:ss')
       this.isActivated = data.is_activated
       this.eventHash = data.event_hash
       this.userId = data.user_id
       this.userType = data.userType
       this.isReceived = data.is_received
+      this.message = data.message
       this.finTransferURL = `/fin/transfer/${this.eventHash}`
     },
     onClickEditEvent () {
@@ -238,10 +263,9 @@ export default {
       Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
-          title: '딸기 희승 케익',
-          description: '#결혼식 #장례식 #경조사 #축의금 #조의금 #부조금',
-          imageUrl:
-            'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+          title: this.title+" 에 초대합니다.",
+          description: this.message,
+          imageUrl: '',
           link: {
             mobileWebUrl: webUrl,
             webUrl: webUrl
@@ -287,7 +311,6 @@ export default {
     },
     clickModal () {
       if (this.isActivated) {
-        console.log('hi')
         alert('종료 이후에만 출금할 수 있습니다.')
         return
       }

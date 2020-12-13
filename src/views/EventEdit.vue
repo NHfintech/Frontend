@@ -57,6 +57,33 @@
             type="text"
             ref="loc"
             placeholder="위치"
+            v-b-modal.modal-prevent-closing
+            readOnly
+          ></b-form-input>
+          <b-modal
+            hide-footer
+            id="modal-prevent-closing"
+            ref="modal"
+          >
+            <vue-daum-postcode
+            @complete=" result = $event;
+            result.userSelectedType=='J' ? location=result.jibunAddress : location=result.roadAddress;
+            $refs['modal'].hide()
+            "
+            />
+          </b-modal>
+
+        </b-input-group>
+      </div>
+      <div class="col-12 py-1">
+        <b-input-group class="mb-2">
+          <b-input-group-prepend is-text>
+            <b-icon icon="geo-fill"></b-icon>
+          </b-input-group-prepend>
+          <b-form-input
+            v-model="locationDetail"
+            type="text"
+            placeholder="상세위치"
           ></b-form-input>
         </b-input-group>
       </div>
@@ -132,6 +159,7 @@ export default {
       category: '',
       title: '',
       location: '',
+      locationDetail: '',
       body: '',
       eventAdmin: [],
       invitationUrl: '',
@@ -141,15 +169,27 @@ export default {
   },
   methods: {
     async onClickEditEvent () {
-      const data = {
+      const requiredData = {
         category: this.category,
         title: this.title,
         location: this.location,
         body: this.body,
-        invitationUrl: this.invitationUrl,
-        eventAdmin: this.convertEventAdmin(),
-        eventDatetime: moment(this.eventDatetime).format('YYYY-MM-DD HH:mm:ss')
+        eventDatetime: moment(this.eventDatetime).format(
+          'YYYY-MM-DD HH:mm:ss'
+        )
       }
+      for (const i in requiredData) {
+        if (requiredData[i] === '') {
+          alert(i + '가 빈칸입니다.')
+          return false
+        }
+      }
+      const unrequiredData = {
+        locationDetail: this.locationDetail,
+        invitationUrl: this.invitationUrl,
+        eventAdmin: this.convertEventAdmin()
+      }
+      const data = { ...requiredData, ...unrequiredData }
       await API.updateEventAPI(this.$http, this.$env.apiUrl, this.$route.params.id, data)
       this.$router.replace({ path: '/event/' + this.$route.params.id }).catch(() => {})
     },
@@ -175,6 +215,7 @@ export default {
       this.title = data.title
       this.body = data.body
       this.location = data.location
+      this.locationDetail = data.location_detail
       this.invitationUrl = data.invitation_url
       this.convertResponseEventAdmin(data.eventAdmin)
       this.eventDatetime = moment(data.event_datetime).add(9, 'hours').toISOString()

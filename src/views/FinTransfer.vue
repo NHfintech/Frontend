@@ -1,19 +1,27 @@
 <template>
-  <div>
-    <div class="form-group row">
-      <label class="col-4 col-form-label" for="accountNumber">Tram</label>
-      <div class="col-6">
-        <input class="form-control" type="text" v-model="tram">
+  <div class="container min-vh-100">
+    <div class="row no-gutters">
+      <div class=" py-3 pl-4 ">
+        <a @click="$router.go(-1)">
+          <b-icon icon="arrow-left" variant="dark" scale="2"></b-icon>
+        </a>
+      </div>
+      <div class="pt-2 mt-1 pl-5 ml-5 font-20 font-do font-weight-bold">
+        송금하기
       </div>
     </div>
-    <div class="form-group row">
-      <label class="col-4 col-form-label" for="message">Message</label>
-      <div class="col-6">
-        <textarea class="form-control" type="textarea" v-model="message"/>
+    <div class="form-group row mt-5">
+      <div class="col-12">
+        <input class="form-control" type="text" placeholder="보낼금액" v-model="tram">
       </div>
     </div>
-    <button v-on:click="onClickTransferEvent">
-      Transfer
+    <div class="form-group row mt-3">
+      <div class="col-12">
+        <textarea class="form-control" type="text" placeholder="보낼 메세지" v-model="message"/>
+      </div>
+    </div>
+    <button class="btn btn-block btn-pink " v-on:click="onClickTransferEvent">
+      송금하기
     </button>
   </div>
 </template>

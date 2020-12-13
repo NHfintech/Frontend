@@ -9,8 +9,8 @@
         </div>
       </div>
     <div v-if="!isActiveLogin&&!isActiveSignup">
-      <h5 class="pt-5">Welcome to</h5>
-      <h5>C&J</h5>
+      <div class="pt-5 font-30 m-0 font-ye font-20 font-weight-normal">통합 부조금 관리 어플</div>
+      <div class="m-0 font-ye pt-3 font-60 text-pink font-weight-light">꽃길</div>
     </div>
     <div v-if="isActiveSignup">
       <h3 class="mt-2">회원가입</h3>
@@ -76,9 +76,9 @@
       </div>
     </div>
     <footer class="col-12 footer text-center">
-      <button v-if='!isActiveLogin&&!isActiveSignup' class="col-10 mx-auto mb-3 py-2 font-13 btn btn-block btn-light rounded-pill border-secondary" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveLogin=!isActiveLogin ">로그인</button>
-      <button v-if='!isActiveLogin&&!isActiveSignup' class="col-10 mx-auto mt-3 py-2 font-13 btn btn-block btn-light rounded-pill border-success" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveSignup=!isActiveSignup ">회원가입</button>
-      <button v-if='isActiveLogin||isActiveSignup' class="btn py-3 btn-success rounded-circle border-success" :class="{'btn-success':username&&userPassword}" v-on:click="isActiveLogin?login():signup() "><b-icon  scale="1.5" variant="dark" icon="arrow-right"></b-icon></button>
+      <button v-if='!isActiveLogin&&!isActiveSignup' class="col-10 mx-auto mb-3 py-2 font-13 btn btn-block btn-light rounded-pill border-secondary" v-on:click="isActiveLogin=!isActiveLogin ">로그인</button>
+      <button v-if='!isActiveLogin&&!isActiveSignup' class="col-10 mx-auto mt-3 py-2 font-13 btn btn-block btn-light rounded-pill border-pink" v-on:click="isActiveSignup=!isActiveSignup ">회원가입</button>
+      <button v-if='isActiveLogin||isActiveSignup' class="btn py-3 btn-pink rounded-circle border-pink" v-on:click="isActiveLogin?login():signup() "><b-icon  scale="1.5" variant="dark" icon="arrow-right"></b-icon></button>
     </footer>
     </div>
   </div>
@@ -148,6 +148,10 @@ export default {
     },
 
     signup: function () {
+      if (this.userPassword !== this.confirmUserPassword) {
+        alert('비밀번호를 확인해 주십시오.')
+        return
+      }
       const data = {
         username: this.username,
         password: this.userPassword,
@@ -155,8 +159,15 @@ export default {
         phone_number: this.phoneNumber.replaceAll('-', '')
       }
       API.signUpAPI(this.$http, this.$env.apiUrl, data).then(res => {
-        alert(res.data.detail)
-        if (res.data.result === 0) this.login(1)
+        if (res.data.result === 0) {
+          this.login(1)
+        } else if (res.data.data === 'users.username must be unique') {
+          alert('아이디가 중복됩니다.')
+        } else if (res.data.data === 'users.phone_number must be unique') {
+          alert('가입된 휴대폰 번호입니다.')
+        } else {
+          alert(res.data.detail)
+        }
       })
     }
   }
