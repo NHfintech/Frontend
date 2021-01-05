@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{'pc':pc}">
     <div class="main-panel">
       <div class="content">
         <router-view/>
@@ -11,9 +11,31 @@
 <script>
 export default {
   name: 'App',
-  data () {
+  data: function () {
     return {
+      pc: false
     }
+  },
+  methods: {
+    device_check () {
+    // 디바이스 종류 설정
+      const pcDevice = 'win16|win32|win64|mac|macintel'
+
+      // 접속한 디바이스 환경
+      const thisDevice = navigator.platform
+      console.log(thisDevice)
+      if (thisDevice) {
+        if (pcDevice.indexOf(navigator.platform.toLowerCase()) < 0) {
+          console.log('MOBILE')
+        } else {
+          this.pc = true
+          console.log('PC')
+        }
+      }
+    }
+  },
+  mounted () {
+    this.device_check()
   }
 }
 </script>
@@ -22,6 +44,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+
 #app {
   /* min-height: 100%; */
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -105,5 +128,20 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+@media (min-width: 990px) {
+  .pc {
+    width: 360px;
+    height: 640px;
+  }
+
+  .main-panel {
+    width: 100% !important;
+  }
+
+  .main-panel > .content {
+    padding: 0 !important;
+  }
 }
 </style>

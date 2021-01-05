@@ -2,7 +2,7 @@
   <div id="LogIn" class="height-max">
     <div class="col-12 bg-image" :class="{'bg-blur':isActiveSignup||isActiveLogin}">
     </div>
-    <div class="col-12 z-index-100 font-do">
+    <div class="col-12 z-index-100 font-do" style="height: 100vh;">
       <div class="col-12 text-left">
         <div style="font-size: 3rem;">
           <b-icon v-if="isActiveLogin||isActiveSignup" icon="x" @click="isActiveLogin=false; isActiveSignup=false"></b-icon>
@@ -181,7 +181,9 @@ export default {
   height: 100vh;
 }
 .footer{
-  position: fixed;
+  position: absolute;
+  left: 0;
+  padding: 0;
   bottom: 10%;
 }
 .z-index-100{
@@ -189,7 +191,7 @@ export default {
 }
 .bg-image {
   transition-duration: 0.3s;
-  position: fixed;
+  position: absolute;
   /* The image used */
   background-image: url("~@/assets/bg.jpg");
 
