@@ -1,7 +1,7 @@
 # front
 
 ## Project ReadME
-[ReadME](https://github.com/NHfintech/README/blob/main/README.md)
+> [Link](https://github.com/NHfintech/README/blob/main/README.md)
 
 ## Project setup
 ```
